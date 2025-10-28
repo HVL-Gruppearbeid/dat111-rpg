@@ -56,8 +56,9 @@ taco = sprites.create(assets.image("taco"), SpriteKind.food)
 taco.set_position(10, 100)
 
 
-
-
+###Teleportører###
+Til_LoreTile = sprites.create(assets.image("Til_Lore"), SpriteKind.food)
+Til_LoreTile.set_position(0, 100)
 
 ### Skattekiste ###
 # Oppretter sprite for en skattekiste og setter dens posisjon.
@@ -125,7 +126,7 @@ def on_update():
     # variabler med samme navn når vi endrer verdi på de.
     global treasureNotOpened
     global gold
-    global utgang
+    
 
     # En skattekiste blir åpnet dersom spillerens sprite overlapper og kisten ikke har vært åpnet før.
     # Ved flere enn en kiste på kartet bør 
@@ -146,26 +147,40 @@ def on_update():
             butikk_level()
             utgang = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.food)
             utgang.set_position(120,183)
-
-
-
-               
+   
         else:
             playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+    if(playerChar.overlaps_with(Til_LoreTile)):
+        pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (enterShop):
+            tiles.set_current_tilemap(tilemap("Lore_Level")) # Endrer tilemap
+                    # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
+            sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+            playerChar.set_position(245,140)
+            bod = sprites.create(assets.image("Bod"), SpriteKind.food)
+            bod.set_position(210, 45)
+            Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
+            Bro.set_position(150,70)
+        else:
+            playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+        
+
 
 
 # Oppdaterer karakterens animasjon
     update_character_animation()
 
 
-if(playerChar.overlaps_with(utgang)):
-        pause_until(onPauseUntilEnter)
-        if(enterShop):
-            tiles.set_current_tilemap(tilemap("Feild_Level"))
-            sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-            playerChar.set_position(128, 70)
-        else:
-            playerChar.set_position(120,178)
+#if(playerChar.overlaps_with(utgang)):
+   #     pause_until(onPauseUntilEnter)
+   #     if(enterShop):
+    #        tiles.set_current_tilemap(tilemap("Feild_Level"))
+    #        sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    #        playerChar.set_position(128, 70)
+    #    else:
+    #        playerChar.set_position(120,178)
             
 
                 

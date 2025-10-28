@@ -105,22 +105,6 @@
         ],
         "displayName": "Slott_Level"
     },
-    "Lore_Level1": {
-        "id": "Lore_Level1",
-        "mimeType": "application/mkcd-tilemap",
-        "data": "MTAxMDAwMTAwMDAxMDMwMTA1MDUwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDUwMTA1MDEwMTA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwMTAzMDUwMTAzMDQwNDA0MDQwNDA0MDQwNDA0MDQwNDAxMDEwMTAxMDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNTA1MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDcwNzA3MDcwNzA3MDcwNzA3MDcwNzA3MDcwNzA3MDcwMTAxMDEwMTA1MDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDMwMTAxMDEwMTA1MDEwMzAzMDMwMzAxMDEwNTAxMDEwMTAxMDEwMzAxMDEwMTAxMDEwMTAzMDEwMTAzMDEwMTA1MDEwMTAxMDEwMTAxMDUwMzAxMDEwMTAzMDEwMTAxMDEwMzAxMDEwMTAzMDEwMTAxMDEwMTA1MDEwMTAxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
-        "tileset": [
-            "myTiles.transparency16",
-            "sprites.castle.tileGrass2",
-            "sprites.castle.tilePath5",
-            "sprites.castle.tileGrass1",
-            "sprites.skillmap.islandTile4",
-            "sprites.castle.tileGrass3",
-            "sprites.castle.tilePath2",
-            "sprites.castle.tilePath8"
-        ],
-        "displayName": "Lore_Level"
-    },
     "level1": {
         "id": "level1",
         "mimeType": "application/mkcd-tilemap",
@@ -143,6 +127,22 @@
             "sprites.dungeon.greenOuterEast2"
         ],
         "displayName": "level"
+    },
+    "Lore_Level1": {
+        "id": "Lore_Level1",
+        "mimeType": "application/mkcd-tilemap",
+        "data": "MTAxMDAwMTAwMDAxMDMwMTA1MDUwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDUwMTA1MDEwMTA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwMTAzMDUwMTAzMDQwNDA0MDQwNDA0MDQwNDA0MDQwNDAxMDEwMTAxMDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNTA1MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA0MDQwNDA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDYwNjA2MDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDcwNzA3MDcwNzA3MDcwNzA3MDcwNzA3MDcwNzA3MDcwMTAxMDEwMTA1MDEwMTAxMDEwMTAxMDEwMTAxMDEwMTAxMDMwMTAxMDEwMTA1MDEwMzAzMDMwMzAxMDEwNTAxMDEwMTAxMDEwMzAxMDEwMTAxMDEwMTAzMDEwMTAzMDEwMTA1MDEwMTAxMDEwMTAxMDUwMzAxMDEwMTAzMDEwMTAxMDEwMzAxMDEwMTAzMDEwMTAxMDEwMTA1MDEwMTAxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMjIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
+        "tileset": [
+            "myTiles.transparency16",
+            "sprites.castle.tileGrass2",
+            "sprites.castle.tilePath5",
+            "sprites.castle.tileGrass1",
+            "sprites.skillmap.islandTile4",
+            "sprites.castle.tileGrass3",
+            "sprites.castle.tilePath2",
+            "sprites.castle.tilePath8"
+        ],
+        "displayName": "Lore_Level"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",

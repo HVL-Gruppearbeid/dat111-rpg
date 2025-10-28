@@ -48,6 +48,9 @@ controller.moveSprite(playerChar)
 //  Oppretter sprite for en taco og setter dens posisjon.
 let taco = sprites.create(assets.image`taco`, SpriteKind.Food)
 taco.setPosition(10, 100)
+// ##Teleportører###
+let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
+Til_LoreTile.setPosition(0, 100)
 // ## Skattekiste ###
 //  Oppretter sprite for en skattekiste og setter dens posisjon.
 let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
@@ -69,6 +72,12 @@ music.play(music.createSong(assets.song`backgroundSong`), music.PlaybackMode.Loo
 let enterShop = false
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
+function onPauseUntilEnter(): boolean {
+    
+    enterShop = game.ask("Enter?")
+    return true
+}
+
 function onPauseUntilExit(): boolean {
     
     enterShop = game.ask("Exit?")
@@ -76,6 +85,14 @@ function onPauseUntilExit(): boolean {
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
+// if(playerChar.overlaps_with(utgang)):
+//      pause_until(onPauseUntilEnter)
+//      if(enterShop):
+//         tiles.set_current_tilemap(tilemap("Feild_Level"))
+//         sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+//         playerChar.set_position(128, 70)
+//     else:
+//         playerChar.set_position(120,178)
 //  Funksjon som sørger for at animasjonene passer med bevegelsen som foregår.
 function update_character_animation() {
     
@@ -131,6 +148,8 @@ function update_character_animation() {
 //  og sørger for at spillet blir interaktivt.
 game.onUpdate(function on_update() {
     let utgang: Sprite;
+    let bod: Sprite;
+    let Bro: Sprite;
     function butikk_level() {
         tiles.setCurrentTilemap(tilemap`shopInterior`)
         //  Endrer tilemap
@@ -169,16 +188,32 @@ game.onUpdate(function on_update() {
     
     //  Dersom spillerens sprite overlapper med butikken vil de kunne gå inn i den.
     if (playerChar.overlapsWith(shop)) {
-        pauseUntil(function onPauseUntilEnter(): boolean {
-            
-            enterShop = game.ask("Enter?")
-            return true
-        })
+        pauseUntil(onPauseUntilEnter)
         //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop) {
             butikk_level()
             utgang = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.Food)
             utgang.setPosition(120, 183)
+        } else {
+            playerChar.setPosition(128, 70)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (playerChar.overlapsWith(Til_LoreTile)) {
+        pauseUntil(onPauseUntilEnter)
+        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (enterShop) {
+            tiles.setCurrentTilemap(tilemap`Lore_Level`)
+            //  Endrer tilemap
+            //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
+            sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+            playerChar.setPosition(245, 140)
+            bod = sprites.create(assets.image`Bod`, SpriteKind.Food)
+            bod.setPosition(210, 45)
+            Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
+            Bro.setPosition(150, 70)
         } else {
             playerChar.setPosition(128, 70)
         }
