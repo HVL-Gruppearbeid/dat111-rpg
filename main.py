@@ -2,6 +2,10 @@
 # "Database"     #
 ##############
 
+@namespace
+class SpriteKind:
+    exit = SpriteKind.create()
+    
 # Oversikt over utstyret som finnes i spillet.
 # Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
 equipmentDatabase = {
@@ -41,7 +45,9 @@ current_animation = "idle"
 ### Banen ###
 # Setter tilemap, som er en samling av tiles/fliser som vi har satt sammen for å danne nivået vårt.
 # Tilemaps og andre audiovisuelle elementer finner man under "Assets" i toppmenyen.
-tiles.set_current_tilemap(tilemap("Feild_Level"))
+
+
+tiles.set_current_tilemap(tilemap("field_level"))
 
 ### Karakteren ###
 # Oppretter den visuelle representasjonen av karakteren som en sprite ("bevegelig bilde").
@@ -74,6 +80,9 @@ treasureNotOpened = True
 # Oppretter sprite for en butikk og setter dens posisjon.
 shop = sprites.create(assets.image("house"), SpriteKind.food)
 shop.set_position(128,20)
+shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
+shopExit.set_position(128,300)
+
 
 
 
@@ -90,6 +99,7 @@ music.PlaybackMode.LOOPING_IN_BACKGROUND)
 
 # Variabel for å holde kontroll på om spilleren vil inn i butikken.
 enterShop = False
+exitShop = False
 
 # Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 # Manglet implementasjon i Python for MakeCode Arcade.
@@ -99,22 +109,33 @@ def onPauseUntilEnter():
     return True
 
 def onPauseUntilExit():
-    global enterShop
-    enterShop = game.ask("Exit?")
+    global exitShop
+    exitShop = game.ask("Exit?")
     return True
+
+
+
+###############
+# LEVELS #
+###############
+def butikk_level():
+       
+    tiles.set_current_tilemap(tilemap("shopInterior")) # Endrer tilemap
+    # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
+    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    shopExit.set_position(120,180)
+    playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
+
+def field_level():
+    tiles.set_current_tilemap(tilemap("field_level")) #Endrer tilemap
+    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    playerChar.set_position(128,60) # Oppdaterer spillerens posisjon
+    shopExit.set_position(128,300)
+
 
 
 # Spilløkken som sørger for interaktivitet i spillet.
 def on_update():
-
-
-    def butikk_level():
-       
-        tiles.set_current_tilemap(tilemap("shopInterior")) # Endrer tilemap
-        # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-        sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-        playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
-
 
 
     # Taco-spriten blir "spist" dersom spillerkarakteren sin sprite overlapper den.
@@ -147,11 +168,18 @@ def on_update():
         pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop):
             butikk_level()
-            utgang = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.food)
-            utgang.set_position(120,183)
    
         else:
             playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+    if(playerChar.overlaps_with(shopExit)):
+        pause_until(onPauseUntilExit) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (exitShop):
+            field_level()
+            
+        else:
+            playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
 
     if(playerChar.overlaps_with(Til_LoreTile)):
         pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
@@ -178,7 +206,7 @@ def on_update():
 #if(playerChar.overlaps_with(utgang)):
    #     pause_until(onPauseUntilEnter)
    #     if(enterShop):
-    #        tiles.set_current_tilemap(tilemap("Feild_Level"))
+    #        tiles.set_current_tilemap(tilemap("Field_Level"))
     #        sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     #        playerChar.set_position(128, 70)
     #    else:

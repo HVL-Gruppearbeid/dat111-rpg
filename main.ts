@@ -1,6 +1,10 @@
 // #############
 //  "Database"     #
 // #############
+namespace SpriteKind {
+    export const exit = SpriteKind.create()
+}
+
 //  Oversikt over utstyret som finnes i spillet.
 //  Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
 let equipmentDatabase = {
@@ -35,7 +39,7 @@ let current_animation = "idle"
 // ## Banen ###
 //  Setter tilemap, som er en samling av tiles/fliser som vi har satt sammen for å danne nivået vårt.
 //  Tilemaps og andre audiovisuelle elementer finner man under "Assets" i toppmenyen.
-tiles.setCurrentTilemap(tilemap`Feild_Level`)
+tiles.setCurrentTilemap(tilemap`field_level`)
 // ## Karakteren ###
 //  Oppretter den visuelle representasjonen av karakteren som en sprite ("bevegelig bilde").
 //  SpriteKind er en enum som lar oss kategorisere spriten for å senere enkelt kunne utføre operasjoner på sprites av samme kategori.
@@ -63,6 +67,8 @@ let treasureNotOpened = true
 //  Oppretter sprite for en butikk og setter dens posisjon.
 let shop = sprites.create(assets.image`house`, SpriteKind.Food)
 shop.setPosition(128, 20)
+let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
+shopExit.setPosition(128, 300)
 // ## Musikk ###
 //  Starter bakgrunnsmusikk som er et lydspor lagret i Assets.
 //  Setter PlaybackMode til en verdi som gjør at sporet spilles kontinuerlig i bakgrunnen.
@@ -72,6 +78,7 @@ music.play(music.createSong(assets.song`backgroundSong`), music.PlaybackMode.Loo
 // #############
 //  Variabel for å holde kontroll på om spilleren vil inn i butikken.
 let enterShop = false
+let exitShop = false
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
 function onPauseUntilEnter(): boolean {
@@ -80,17 +87,33 @@ function onPauseUntilEnter(): boolean {
     return true
 }
 
-function onPauseUntilExit(): boolean {
-    
-    enterShop = game.ask("Exit?")
-    return true
+// ##############
+//  LEVELS #
+// ##############
+function butikk_level() {
+    tiles.setCurrentTilemap(tilemap`shopInterior`)
+    //  Endrer tilemap
+    //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+    shopExit.setPosition(120, 180)
+    playerChar.setPosition(120, 160)
+}
+
+//  Oppdaterer spillerens posisjon
+function field_level() {
+    tiles.setCurrentTilemap(tilemap`field_level`)
+    // Endrer tilemap
+    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+    playerChar.setPosition(128, 60)
+    //  Oppdaterer spillerens posisjon
+    shopExit.setPosition(128, 300)
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
 // if(playerChar.overlaps_with(utgang)):
 //      pause_until(onPauseUntilEnter)
 //      if(enterShop):
-//         tiles.set_current_tilemap(tilemap("Feild_Level"))
+//         tiles.set_current_tilemap(tilemap("Field_Level"))
 //         sprites.destroy_all_sprites_of_kind(SpriteKind.food)
 //         playerChar.set_position(128, 70)
 //     else:
@@ -149,18 +172,8 @@ function update_character_animation() {
 //  dvs. det som fungerer som spilløkken som oppdateres kontinuerlig
 //  og sørger for at spillet blir interaktivt.
 game.onUpdate(function on_update() {
-    let utgang: Sprite;
     let bod: Sprite;
     let Bro: Sprite;
-    function butikk_level() {
-        tiles.setCurrentTilemap(tilemap`shopInterior`)
-        //  Endrer tilemap
-        //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-        playerChar.setPosition(120, 160)
-    }
-    
-    //  Oppdaterer spillerens posisjon
     //  Taco-spriten blir "spist" dersom spillerkarakteren sin sprite overlapper den.
     //  Dette gjøres ved å spille av et lydklipp og sette resterende livstid for sprite til 0.
     if (playerChar.overlapsWith(taco)) {
@@ -194,8 +207,22 @@ game.onUpdate(function on_update() {
         //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop) {
             butikk_level()
-            utgang = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.Food)
-            utgang.setPosition(120, 183)
+        } else {
+            playerChar.setPosition(128, 70)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (playerChar.overlapsWith(shopExit)) {
+        pauseUntil(function onPauseUntilExit(): boolean {
+            
+            exitShop = game.ask("Exit?")
+            return true
+        })
+        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (exitShop) {
+            field_level()
         } else {
             playerChar.setPosition(128, 70)
         }
