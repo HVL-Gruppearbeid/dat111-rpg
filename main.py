@@ -163,7 +163,7 @@ def on_update():
             Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
             Bro.set_position(150,70)
         else:
-            playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+            playerChar.set_position(40, 90) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
         
 

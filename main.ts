@@ -215,7 +215,7 @@ game.onUpdate(function on_update() {
             Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
             Bro.setPosition(150, 70)
         } else {
-            playerChar.setPosition(128, 70)
+            playerChar.setPosition(40, 90)
         }
         
     }
