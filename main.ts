@@ -72,6 +72,7 @@ let treasureNotOpened = true
 music.play(music.createSong(assets.song`backgroundSong`), music.PlaybackMode.LoopingInBackground)
 let shop = sprites.create(assets.image`house`, SpriteKind.Food)
 let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
+let BandittEnter = sprites.create(assets.image`Til_Banditt`, SpriteKind.Food)
 field_level()
 // #############
 //  Funksjoner #
@@ -99,8 +100,6 @@ function butikk_level() {
     // ## Butikk-fyren ###
     let butikkEier = sprites.create(assets.image`ButikkEier`, SpriteKind.Food)
     butikkEier.setPosition(120, 65)
-    let utgang = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.Food)
-    utgang.setPosition(120, 183)
     // ## Bod i butikken ###
     let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
     bodButikk.setPosition(120, 72)
@@ -118,23 +117,27 @@ function butikk_level() {
 function field_level() {
     tiles.setCurrentTilemap(tilemap`field_level`)
     // Endrer tilemap
+    BandittEnter.setPosition(128, 255)
     // ## Butikk ###
     //  Oppretter sprite for en butikk og setter dens posisjon.
     shop.setPosition(128, 20)
     shopExit.setPosition(128, 300)
-    playerChar.setPosition(128, 250)
+    playerChar.setPosition(128, 230)
     //  Oppdaterer spillerens posisjon
     shopExit.setPosition(128, 300)
 }
 
 function Banditt_Level() {
     tiles.setCurrentTilemap(tilemap`Banditt_Level`)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+    sprites.destroyAllSpritesOfKind(SpriteKind.skills)
+    playerChar.setPosition(128, 30)
     let Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
-    Banditt.setPosition(125, 72)
+    Banditt.setPosition(128, 145)
     let Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
-    Banditt2.setPosition(125, 72)
+    Banditt2.setPosition(148, 130)
     let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
-    Banditt3.setPosition(125, 72)
+    Banditt3.setPosition(100, 130)
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
@@ -280,6 +283,16 @@ game.onUpdate(function on_update() {
     }
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (playerChar.overlapsWith(BandittEnter)) {
+        pauseUntil(onPauseUntilEnter)
+        if (enterShop) {
+            Banditt_Level()
+        } else {
+            playerChar.setPosition(120, 120)
+        }
+        
+    }
+    
     //  Oppdaterer karakterens animasjon
     update_character_animation()
 })

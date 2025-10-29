@@ -96,6 +96,7 @@ music.PlaybackMode.LOOPING_IN_BACKGROUND)
 shop = sprites.create(assets.image("house"), SpriteKind.food)
 shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
 
+BandittEnter = sprites.create(assets.image("Til_Banditt"),SpriteKind.food)
 field_level()
 
 ##############
@@ -130,8 +131,7 @@ def butikk_level():
     ### Butikk-fyren ###
     butikkEier = sprites.create(assets.image("ButikkEier"), SpriteKind.Food)
     butikkEier.set_position(120, 65)
-    utgang = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.Food)
-    utgang.set_position(120,183)
+    
     ### Bod i butikken ###
     bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
     bodButikk.set_position(120, 72)
@@ -153,24 +153,30 @@ def butikk_level():
 def field_level():
     tiles.set_current_tilemap(tilemap("field_level")) #Endrer tilemap
     
+    
+    BandittEnter.set_position(128, 255)
     ### Butikk ###
     # Oppretter sprite for en butikk og setter dens posisjon.
     shop.set_position(128,20)
     shopExit.set_position(128,300)
-    playerChar.set_position(128, 250) # Oppdaterer spillerens posisjon
+    playerChar.set_position(128, 230) # Oppdaterer spillerens posisjon
     shopExit.set_position(128,300)
 
 def Banditt_Level():
     tiles.set_current_tilemap(tilemap("Banditt_Level"))
+    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    sprites.destroy_all_sprites_of_kind(SpriteKind.skills)
+    playerChar.set_position(128, 30)
+
 
     Banditt = sprites.create(assets.image("Banditt"), SpriteKind.npc)
-    Banditt.set_position(125, 72)
+    Banditt.set_position(128, 145)
 
     Banditt2 = sprites.create(assets.image("Banditt2"), SpriteKind.npc)
-    Banditt2.set_position(125, 72)
+    Banditt2.set_position(148, 130)
 
     Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.npc)
-    Banditt3.set_position(125, 72)
+    Banditt3.set_position(100, 130)
 
 # Spilløkken som sørger for interaktivitet i spillet.
 def on_update():
@@ -234,6 +240,12 @@ def on_update():
         else:
             playerChar.set_position(40, 90) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
+    if(playerChar.overlaps_with(BandittEnter)):
+        pause_until(onPauseUntilEnter)
+        if(enterShop):
+            Banditt_Level()
+        else:
+            playerChar.set_position(120,120)
         
 
 
