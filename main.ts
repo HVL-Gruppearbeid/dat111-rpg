@@ -29,7 +29,7 @@ let stats = {
 //  Inventaret til karakteren, uttrykt ved hjelp av tekststrenger i en liste.
 //  Tekststrengene i listen skal være nøkkelverdien til elementer i equipmentDatabase,
 //  slik at man da kan hente ut de tilhørende verdiene derfra.
-let inventory = ["Tunic of speed"]
+let inventory = [""]
 //  Setter startanimasjon til å være idel/ledig.
 //  Bruker denne variabelen senere for å håndtere korrekt animering
 let current_animation = "idle"
