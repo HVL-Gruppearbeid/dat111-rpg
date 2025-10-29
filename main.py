@@ -8,6 +8,8 @@ class SpriteKind:
     exit = SpriteKind.create()
     
     skills = SpriteKind.create()
+
+    npc = SpriteKind.create()
     
 # Oversikt over utstyret som finnes i spillet.
 # Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
@@ -158,9 +160,17 @@ def field_level():
     playerChar.set_position(128, 250) # Oppdaterer spillerens posisjon
     shopExit.set_position(128,300)
 
+def Banditt_Level():
+    tiles.set_current_tilemap(tilemap("Banditt_Level"))
 
+    Banditt = sprites.create(assets.image("Banditt"), SpriteKind.npc)
+    Banditt.set_position(125, 72)
 
+    Banditt2 = sprites.create(assets.image("Banditt2"), SpriteKind.npc)
+    Banditt2.set_position(125, 72)
 
+    Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.npc)
+    Banditt3.set_position(125, 72)
 
 # Spilløkken som sørger for interaktivitet i spillet.
 def on_update():

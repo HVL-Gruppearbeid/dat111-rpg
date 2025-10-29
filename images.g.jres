@@ -179,6 +179,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "Hero_Stab_Right"
     },
+    "image37": {
+        "data": "hwQwABAAAAB3d3d3d3d3d3d3d3d3d3d3dwcAAAAAd3d3BwAAAAB3d3cHAAAAAHd3d3cAAAAAd3d3dwAAAHB3d3d3AAAAcHd3d3cAAABwd3d3dwcAAHB3d3d3BwAAd3d3d3cHAAB3d3d3d3cAAHcHd3d3dwAAdwd3d3B3AHB3B3d3cHcHcHcHd3dwdwdwdwB3dwB3B3d3AHd3AHcHd3cAd3cAd3d3BwB3dwB3d3cHAHd3AHB3dwcAd3cAcHd3BwB3dwBwd3cAAHd3AAB3dwAAd3cAAHd3AAB3dwAAd3cAAHd3AAB3dwAAd3cAAHd3BwB3dwBwd3cHAHd3AHB3dwcAd3cAcHd3BwB3dwB3d3d3AHd3AHd3d3cAd3cAdwdwdwB3dwB3B3B3B3d3cHcHcHcHd3dwdwcAdwd3d3B3AAB3d3d3cHcAAHd3d3d3dwAAcHd3d3d3AABwd3d3dwcAAHB3d3d3BwAAcHd3d3cHAAAAd3d3dwcAAAB3d3d3d3d3d3d3d3d3d3d3d3c=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "Til_Banditt"
+    },
     "anim2": {
         "namespace": "myAnimations",
         "id": "anim2",

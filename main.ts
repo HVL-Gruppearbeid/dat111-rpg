@@ -5,6 +5,7 @@
 namespace SpriteKind {
     export const exit = SpriteKind.create()
     export const skills = SpriteKind.create()
+    export const npc = SpriteKind.create()
 }
 
 //  Oversikt over utstyret som finnes i spillet.
@@ -124,6 +125,16 @@ function field_level() {
     playerChar.setPosition(128, 250)
     //  Oppdaterer spillerens posisjon
     shopExit.setPosition(128, 300)
+}
+
+function Banditt_Level() {
+    tiles.setCurrentTilemap(tilemap`Banditt_Level`)
+    let Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
+    Banditt.setPosition(125, 72)
+    let Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
+    Banditt2.setPosition(125, 72)
+    let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
+    Banditt3.setPosition(125, 72)
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
