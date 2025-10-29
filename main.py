@@ -46,8 +46,8 @@ current_animation = "idle"
 # Setter tilemap, som er en samling av tiles/fliser som vi har satt sammen for å danne nivået vårt.
 # Tilemaps og andre audiovisuelle elementer finner man under "Assets" i toppmenyen.
 
-
 tiles.set_current_tilemap(tilemap("field_level"))
+
 
 ### Karakteren ###
 # Oppretter den visuelle representasjonen av karakteren som en sprite ("bevegelig bilde").
@@ -76,12 +76,7 @@ treasure.set_position(200, 150)
 treasureNotOpened = True 
 
 
-### Butikk ###
-# Oppretter sprite for en butikk og setter dens posisjon.
-shop = sprites.create(assets.image("house"), SpriteKind.food)
-shop.set_position(128,20)
-shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
-shopExit.set_position(128,300)
+
 
 
 
@@ -92,6 +87,11 @@ shopExit.set_position(128,300)
 # Setter PlaybackMode til en verdi som gjør at sporet spilles kontinuerlig i bakgrunnen.
 music.play(music.create_song(assets.song("backgroundSong")), 
 music.PlaybackMode.LOOPING_IN_BACKGROUND)
+
+shop = sprites.create(assets.image("house"), SpriteKind.food)
+shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
+
+field_level()
 
 ##############
 # Funksjoner #
@@ -119,10 +119,7 @@ def onPauseUntilExit():
 # LEVELS #
 ###############
 def butikk_level():
-       
     tiles.set_current_tilemap(tilemap("shopInterior")) # Endrer tilemap
-    # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     shopExit.set_position(120,180)
     playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
     ### Butikk-fyren ###
@@ -134,11 +131,18 @@ def butikk_level():
     bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
     bodButikk.set_position(120, 68)
 
+
 def field_level():
     tiles.set_current_tilemap(tilemap("field_level")) #Endrer tilemap
-    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-    playerChar.set_position(128,60) # Oppdaterer spillerens posisjon
+    
+    ### Butikk ###
+    # Oppretter sprite for en butikk og setter dens posisjon.
+    shop.set_position(128,20)
     shopExit.set_position(128,300)
+    playerChar.set_position(128, 250) # Oppdaterer spillerens posisjon
+    shopExit.set_position(128,300)
+
+
 
 
 
@@ -223,10 +227,10 @@ def on_update():
 
                 
 
-def venstre_slipp():
-    animation.run_image_animation(playerChar,
-        assets.animation("Hero_StandStill_Left"),
-        0)
+#def venstre_slipp():
+ #   animation.run_image_animation(playerChar,
+  #      assets.animation("Hero_StandStill_Left"),
+   #     0)
     
 
 
@@ -245,7 +249,7 @@ def update_character_animation():
             current_animation = "walk_left"
         
         
-            controller.left.on_event(ControllerButtonEvent.RELEASED, venstre_slipp)
+            #controller.left.on_event(ControllerButtonEvent.RELEASED, venstre_slipp)
 
 
     if(controller.right.is_pressed()):

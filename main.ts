@@ -63,16 +63,13 @@ let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
 treasure.setPosition(200, 150)
 //  Angir at kisten ikke er åpnet enda, slik at vi senere unngå at gull gis mer enn en gang til spilleren.
 let treasureNotOpened = true
-// ## Butikk ###
-//  Oppretter sprite for en butikk og setter dens posisjon.
-let shop = sprites.create(assets.image`house`, SpriteKind.Food)
-shop.setPosition(128, 20)
-let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
-shopExit.setPosition(128, 300)
 // ## Musikk ###
 //  Starter bakgrunnsmusikk som er et lydspor lagret i Assets.
 //  Setter PlaybackMode til en verdi som gjør at sporet spilles kontinuerlig i bakgrunnen.
 music.play(music.createSong(assets.song`backgroundSong`), music.PlaybackMode.LoopingInBackground)
+let shop = sprites.create(assets.image`house`, SpriteKind.Food)
+let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
+field_level()
 // #############
 //  Funksjoner #
 // #############
@@ -93,8 +90,6 @@ function onPauseUntilEnter(): boolean {
 function butikk_level() {
     tiles.setCurrentTilemap(tilemap`shopInterior`)
     //  Endrer tilemap
-    //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
     shopExit.setPosition(120, 180)
     playerChar.setPosition(120, 160)
     //  Oppdaterer spillerens posisjon
@@ -111,8 +106,11 @@ function butikk_level() {
 function field_level() {
     tiles.setCurrentTilemap(tilemap`field_level`)
     // Endrer tilemap
-    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-    playerChar.setPosition(128, 60)
+    // ## Butikk ###
+    //  Oppretter sprite for en butikk og setter dens posisjon.
+    shop.setPosition(128, 20)
+    shopExit.setPosition(128, 300)
+    playerChar.setPosition(128, 250)
     //  Oppdaterer spillerens posisjon
     shopExit.setPosition(128, 300)
 }
@@ -126,6 +124,10 @@ function field_level() {
 //         playerChar.set_position(128, 70)
 //     else:
 //         playerChar.set_position(120,178)
+// def venstre_slipp():
+//    animation.run_image_animation(playerChar,
+//       assets.animation("Hero_StandStill_Left"),
+//      0)
 //  Funksjon som sørger for at animasjonene passer med bevegelsen som foregår.
 function update_character_animation() {
     
@@ -137,13 +139,11 @@ function update_character_animation() {
             //  Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
             animation.runImageAnimation(playerChar, assets.animation`heroWalkLeft`, 200, true)
             current_animation = "walk_left"
-            controller.left.onEvent(ControllerButtonEvent.Released, function venstre_slipp() {
-                animation.runImageAnimation(playerChar, assets.animation`Hero_StandStill_Left`, 0)
-            })
         }
         
     }
     
+    // controller.left.on_event(ControllerButtonEvent.RELEASED, venstre_slipp)
     if (controller.right.isPressed()) {
         if (current_animation != "walk_right") {
             //  Unngår å overskrive pågående animasjon
