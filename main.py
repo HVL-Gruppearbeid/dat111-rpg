@@ -2,9 +2,12 @@
 # "Database"     #
 ##############
 
+#Klassedeklarasjoner
 @namespace
 class SpriteKind:
     exit = SpriteKind.create()
+    
+    skills = SpriteKind.create()
     
 # Oversikt over utstyret som finnes i spillet.
 # Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
@@ -129,7 +132,20 @@ def butikk_level():
     utgang.set_position(120,183)
     ### Bod i butikken ###
     bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
-    bodButikk.set_position(120, 68)
+    bodButikk.set_position(120, 72)
+
+    ### Ferdigheter i butikken ###
+    strPotion = sprites.create(assets.image("strPotion"), SpriteKind.skills)
+    strPotion.set_position(105, 72)
+
+    intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.skills)
+    intellectPotion.set_position(115, 72)
+
+    agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.skills)
+    agilityPotion.set_position(125, 72)
+    
+    speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.skills)
+    speedPotion.set_position(135, 72)
 
 
 def field_level():
@@ -174,6 +190,7 @@ def on_update():
         # Spilleren får en beskjed i en dialogboks om at de har fått mer gull.
         game.show_long_text("You got " + str(100) + " gold!", DialogLayout.BOTTOM)
         
+    
 
     # Dersom spillerens sprite overlapper med butikken vil de kunne gå inn i den.
     if(playerChar.overlaps_with(shop)):

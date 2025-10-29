@@ -1,8 +1,10 @@
 // #############
 //  "Database"     #
 // #############
+// Klassedeklarasjoner
 namespace SpriteKind {
     export const exit = SpriteKind.create()
+    export const skills = SpriteKind.create()
 }
 
 //  Oversikt over utstyret som finnes i spillet.
@@ -100,7 +102,16 @@ function butikk_level() {
     utgang.setPosition(120, 183)
     // ## Bod i butikken ###
     let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
-    bodButikk.setPosition(120, 68)
+    bodButikk.setPosition(120, 72)
+    // ## Ferdigheter i butikken ###
+    let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.skills)
+    strPotion.setPosition(105, 72)
+    let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.skills)
+    intellectPotion.setPosition(115, 72)
+    let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.skills)
+    agilityPotion.setPosition(125, 72)
+    let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.skills)
+    speedPotion.setPosition(135, 72)
 }
 
 function field_level() {
