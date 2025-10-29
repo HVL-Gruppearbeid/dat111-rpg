@@ -19,8 +19,10 @@ gold = 0
 # Grunnivået på ferdighetene til karakteren
 # Uttrykt ved hjelp av en ordbok/dictionary (nøkkel : verdi)
 stats = {
-    "strength" : 3,
-    "intellect" : 1
+    "strength": 3,
+    "intellect": 1,
+    "agility": 2,
+    "speed": 5
 }
 
 # Inventaret til karakteren, uttrykt ved hjelp av tekststrenger i en liste.
