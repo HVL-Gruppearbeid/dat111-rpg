@@ -60,6 +60,9 @@ taco.setPosition(10, 100)
 // ##Teleportører###
 let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
 Til_LoreTile.setPosition(0, 100)
+let BandittEnter = sprites.create(assets.image`Til_Banditt`, SpriteKind.Food)
+let BandittExit = sprites.create(assets.image`Til_Banditt`, SpriteKind.exit)
+BandittExit.setPosition(0, 0)
 // ## Skattekiste ###
 //  Oppretter sprite for en skattekiste og setter dens posisjon.
 let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
@@ -72,7 +75,6 @@ let treasureNotOpened = true
 music.play(music.createSong(assets.song`backgroundSong`), music.PlaybackMode.LoopingInBackground)
 let shop = sprites.create(assets.image`house`, SpriteKind.Food)
 let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
-let BandittEnter = sprites.create(assets.image`Til_Banditt`, SpriteKind.Food)
 field_level()
 // #############
 //  Funksjoner #
@@ -86,6 +88,18 @@ function onPauseUntilEnter(): boolean {
     
     enterShop = game.ask("Enter?")
     return true
+}
+
+function onPauseUntilExit(): boolean {
+    
+    exitShop = game.ask("Exit?")
+    return true
+}
+
+function Destroy_Sprites() {
+    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+    sprites.destroyAllSpritesOfKind(SpriteKind.npc)
+    sprites.destroyAllSpritesOfKind(SpriteKind.exit)
 }
 
 // ##############
@@ -103,7 +117,6 @@ function butikk_level() {
     // ## Bod i butikken ###
     let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
     bodButikk.setPosition(120, 72)
-    // ## Ferdigheter i butikken ###
     let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.skills)
     strPotion.setPosition(105, 72)
     let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.skills)
@@ -138,17 +151,10 @@ function Banditt_Level() {
     Banditt2.setPosition(148, 130)
     let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
     Banditt3.setPosition(100, 130)
+    BandittExit.setPosition(128, 0)
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
-// if(playerChar.overlaps_with(utgang)):
-//      pause_until(onPauseUntilEnter)
-//      if(enterShop):
-//         tiles.set_current_tilemap(tilemap("Field_Level"))
-//         sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-//         playerChar.set_position(128, 70)
-//     else:
-//         playerChar.set_position(120,178)
 // def venstre_slipp():
 //    animation.run_image_animation(playerChar,
 //       assets.animation("Hero_StandStill_Left"),
@@ -248,11 +254,7 @@ game.onUpdate(function on_update() {
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
     if (playerChar.overlapsWith(shopExit)) {
-        pauseUntil(function onPauseUntilExit(): boolean {
-            
-            exitShop = game.ask("Exit?")
-            return true
-        })
+        pauseUntil(onPauseUntilExit)
         //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (exitShop) {
             field_level()
@@ -289,6 +291,18 @@ game.onUpdate(function on_update() {
             Banditt_Level()
         } else {
             playerChar.setPosition(120, 120)
+        }
+        
+    }
+    
+    if (playerChar.overlapsWith(BandittExit)) {
+        pauseUntil(onPauseUntilExit)
+        if (enterShop) {
+            sprites.destroyAllSpritesOfKind(SpriteKind.npc)
+            sprites.destroyAllSpritesOfKind(SpriteKind.exit)
+            field_level()
+        } else {
+            playerChar.setPosition(128, 30)
         }
         
     }

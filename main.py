@@ -73,6 +73,11 @@ taco.set_position(10, 100)
 Til_LoreTile = sprites.create(assets.image("Til_Lore"), SpriteKind.food)
 Til_LoreTile.set_position(0, 100)
 
+BandittEnter = sprites.create(assets.image("Til_Banditt"),SpriteKind.food)
+
+BandittExit = sprites.create(assets.image("Til_Banditt"),SpriteKind.exit)
+BandittExit.set_position(0, 0)
+
 ### Skattekiste ###
 # Oppretter sprite for en skattekiste og setter dens posisjon.
 treasure = sprites.create(assets.image("chestClosed"), SpriteKind.food)
@@ -96,7 +101,7 @@ music.PlaybackMode.LOOPING_IN_BACKGROUND)
 shop = sprites.create(assets.image("house"), SpriteKind.food)
 shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
 
-BandittEnter = sprites.create(assets.image("Til_Banditt"),SpriteKind.food)
+
 field_level()
 
 ##############
@@ -119,7 +124,10 @@ def onPauseUntilExit():
     exitShop = game.ask("Exit?")
     return True
 
-
+def Destroy_Sprites():
+    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
+    sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
 
 ###############
 # LEVELS #
@@ -136,7 +144,6 @@ def butikk_level():
     bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
     bodButikk.set_position(120, 72)
 
-    ### Ferdigheter i butikken ###
     strPotion = sprites.create(assets.image("strPotion"), SpriteKind.skills)
     strPotion.set_position(105, 72)
 
@@ -148,11 +155,14 @@ def butikk_level():
     
     speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.skills)
     speedPotion.set_position(135, 72)
+ 
+
+
+
 
 
 def field_level():
     tiles.set_current_tilemap(tilemap("field_level")) #Endrer tilemap
-    
     
     BandittEnter.set_position(128, 255)
     ### Butikk ###
@@ -177,6 +187,8 @@ def Banditt_Level():
 
     Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.npc)
     Banditt3.set_position(100, 130)
+
+    BandittExit.set_position(128, 0)
 
 # Spilløkken som sørger for interaktivitet i spillet.
 def on_update():
@@ -246,6 +258,15 @@ def on_update():
             Banditt_Level()
         else:
             playerChar.set_position(120,120)
+
+    if(playerChar.overlaps_with(BandittExit)):
+        pause_until(onPauseUntilExit)
+        if(enterShop):
+            sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
+            sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
+            field_level()
+        else:
+            playerChar.set_position(128,30)
         
 
 
@@ -254,15 +275,6 @@ def on_update():
     update_character_animation()
 
 
-#if(playerChar.overlaps_with(utgang)):
-   #     pause_until(onPauseUntilEnter)
-   #     if(enterShop):
-    #        tiles.set_current_tilemap(tilemap("Field_Level"))
-    #        sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-    #        playerChar.set_position(128, 70)
-    #    else:
-    #        playerChar.set_position(120,178)
-            
 
                 
 
