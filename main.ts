@@ -97,9 +97,17 @@ function butikk_level() {
     sprites.destroyAllSpritesOfKind(SpriteKind.Food)
     shopExit.setPosition(120, 180)
     playerChar.setPosition(120, 160)
+    //  Oppdaterer spillerens posisjon
+    // ## Butikk-fyren ###
+    let butikkEier = sprites.create(assets.image`ButikkEier`, SpriteKind.Food)
+    butikkEier.setPosition(120, 65)
+    let utgang = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.Food)
+    utgang.setPosition(120, 183)
+    // ## Bod i butikken ###
+    let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
+    bodButikk.setPosition(120, 68)
 }
 
-//  Oppdaterer spillerens posisjon
 function field_level() {
     tiles.setCurrentTilemap(tilemap`field_level`)
     // Endrer tilemap

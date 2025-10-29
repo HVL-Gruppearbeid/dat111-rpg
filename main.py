@@ -125,6 +125,14 @@ def butikk_level():
     sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     shopExit.set_position(120,180)
     playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
+    ### Butikk-fyren ###
+    butikkEier = sprites.create(assets.image("ButikkEier"), SpriteKind.Food)
+    butikkEier.set_position(120, 65)
+    utgang = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.Food)
+    utgang.set_position(120,183)
+    ### Bod i butikken ###
+    bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
+    bodButikk.set_position(120, 68)
 
 def field_level():
     tiles.set_current_tilemap(tilemap("field_level")) #Endrer tilemap
