@@ -45,7 +45,7 @@ tiles.set_current_tilemap(tilemap("Feild_Level"))
 # Oppretter den visuelle representasjonen av karakteren som en sprite ("bevegelig bilde").
 # SpriteKind er en enum som lar oss kategorisere spriten for å senere enkelt kunne utføre operasjoner på sprites av samme kategori.
 playerChar = sprites.create(assets.image("heroIdleFront"), SpriteKind.player)
-playerChar.set_position(128, 250) # Setter posisjonen til karakteren til å være nederst i midten av brettet
+playerChar.set_position(128, 230) # Setter posisjonen til karakteren til å være nederst i midten av brettet
 scene.camera_follow_sprite(playerChar) # Setter kameraet til å følge etter karakteren sin sprite.
 # Angir karakteren sin sprite som "bevegelses-sprite", dvs. at standardkontrollene vil nå påvirke spillerens sprite.
 controller.move_sprite(playerChar)
@@ -59,6 +59,10 @@ taco.set_position(10, 100)
 ###Teleportører###
 Til_LoreTile = sprites.create(assets.image("Til_Lore"), SpriteKind.food)
 Til_LoreTile.set_position(0, 100)
+
+Til_BanditterTile = sprites.create(assets.image("Til_Banditter"), SpriteKind.food)
+Til_BanditterTile.set_position(128, 250)
+
 
 ### Skattekiste ###
 # Oppretter sprite for en skattekiste og setter dens posisjon.
@@ -162,6 +166,24 @@ def on_update():
             bod.set_position(210, 45)
             Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
             Bro.set_position(150,70)
+        else:
+            playerChar.set_position(40,90) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+    if(playerChar.overlaps_with(Til_BanditterTile)):
+        pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (enterShop):
+            tiles.set_current_tilemap(tilemap("Banditt_Level"))
+            sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+            playerChar.set_position(128,30)
+            Banditt1 = sprites.create(assets.image("Banditt"), SpriteKind.food)
+            Banditt1.set_position(128, 160)
+            Banditt2 = sprites.create(assets.image("Banditt2"), SpriteKind.food)
+            Banditt2.set_position(155, 140)
+            Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.food)
+            Banditt3.set_position(100,140)
+            utgang = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.food)
+            utgang.set_position(0,183)
+   
         else:
             playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 

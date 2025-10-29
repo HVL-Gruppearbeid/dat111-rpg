@@ -38,7 +38,7 @@ tiles.setCurrentTilemap(tilemap`Feild_Level`)
 //  Oppretter den visuelle representasjonen av karakteren som en sprite ("bevegelig bilde").
 //  SpriteKind er en enum som lar oss kategorisere spriten for å senere enkelt kunne utføre operasjoner på sprites av samme kategori.
 let playerChar = sprites.create(assets.image`heroIdleFront`, SpriteKind.Player)
-playerChar.setPosition(128, 250)
+playerChar.setPosition(128, 230)
 //  Setter posisjonen til karakteren til å være nederst i midten av brettet
 scene.cameraFollowSprite(playerChar)
 //  Setter kameraet til å følge etter karakteren sin sprite.
@@ -51,6 +51,8 @@ taco.setPosition(10, 100)
 // ##Teleportører###
 let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
 Til_LoreTile.setPosition(0, 100)
+let Til_BanditterTile = sprites.create(assets.image`Til_Banditter`, SpriteKind.Food)
+Til_BanditterTile.setPosition(128, 250)
 // ## Skattekiste ###
 //  Oppretter sprite for en skattekiste og setter dens posisjon.
 let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
@@ -150,6 +152,9 @@ game.onUpdate(function on_update() {
     let utgang: Sprite;
     let bod: Sprite;
     let Bro: Sprite;
+    let Banditt1: Sprite;
+    let Banditt2: Sprite;
+    let Banditt3: Sprite;
     function butikk_level() {
         tiles.setCurrentTilemap(tilemap`shopInterior`)
         //  Endrer tilemap
@@ -214,6 +219,28 @@ game.onUpdate(function on_update() {
             bod.setPosition(210, 45)
             Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
             Bro.setPosition(150, 70)
+        } else {
+            playerChar.setPosition(40, 90)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (playerChar.overlapsWith(Til_BanditterTile)) {
+        pauseUntil(onPauseUntilEnter)
+        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (enterShop) {
+            tiles.setCurrentTilemap(tilemap`Banditt_Level`)
+            sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+            playerChar.setPosition(128, 30)
+            Banditt1 = sprites.create(assets.image`Banditt`, SpriteKind.Food)
+            Banditt1.setPosition(128, 160)
+            Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.Food)
+            Banditt2.setPosition(155, 140)
+            Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.Food)
+            Banditt3.setPosition(100, 140)
+            utgang = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.Food)
+            utgang.setPosition(0, 183)
         } else {
             playerChar.setPosition(128, 70)
         }
