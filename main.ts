@@ -51,6 +51,7 @@ taco.setPosition(10, 100)
 // ##Teleportører###
 let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
 Til_LoreTile.setPosition(0, 100)
+let Til_BandittTile = sprites.create(assets.image`Til_Banditt`)
 // ## Skattekiste ###
 //  Oppretter sprite for en skattekiste og setter dens posisjon.
 let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)

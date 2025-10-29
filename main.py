@@ -60,6 +60,7 @@ taco.set_position(10, 100)
 Til_LoreTile = sprites.create(assets.image("Til_Lore"), SpriteKind.food)
 Til_LoreTile.set_position(0, 100)
 
+Til_BandittTile = sprites.create(assets.image("Til_Banditt"))
 ### Skattekiste ###
 # Oppretter sprite for en skattekiste og setter dens posisjon.
 treasure = sprites.create(assets.image("chestClosed"), SpriteKind.food)
