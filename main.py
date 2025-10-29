@@ -23,7 +23,8 @@ equipmentDatabase = {
 
 # Setter startverdi for gull i en vanlig variabel 
 # Vi oppdaterer denne senere når karakteren åpner en kiste og kjøper/selger ting i butikken.
-gold = 0 
+gold = 20
+teller = 0
 
 # Grunnivået på ferdighetene til karakteren
 # Uttrykt ved hjelp av en ordbok/dictionary (nøkkel : verdi)
@@ -78,6 +79,8 @@ BandittEnter = sprites.create(assets.image("Til_Banditt"),SpriteKind.food)
 BandittExit = sprites.create(assets.image("Til_Banditt"),SpriteKind.exit)
 BandittExit.set_position(0, 0)
 
+
+
 ### Skattekiste ###
 # Oppretter sprite for en skattekiste og setter dens posisjon.
 treasure = sprites.create(assets.image("chestClosed"), SpriteKind.food)
@@ -111,6 +114,10 @@ field_level()
 # Variabel for å holde kontroll på om spilleren vil inn i butikken.
 enterShop = False
 exitShop = False
+Kjeks = False
+Bro: Sprite = None
+bod: Sprite = None
+
 
 # Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 # Manglet implementasjon i Python for MakeCode Arcade.
@@ -128,6 +135,11 @@ def Destroy_Sprites():
     sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
     sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
+
+def VilHaKjeks():
+    global Kjeks
+    Kjeks = game.ask("Vil du kjøpe en Kjeks for 1 gull?")
+    return True
 
 ###############
 # LEVELS #
@@ -190,6 +202,17 @@ def Banditt_Level():
 
     BandittExit.set_position(128, 0)
 
+def Lore_Level():
+    tiles.set_current_tilemap(tilemap("Lore_Level")) # Endrer tilemap
+                        # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
+    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    playerChar.set_position(245,140)
+    global bod
+    bod = sprites.create(assets.image("Bod"), SpriteKind.food)
+    bod.set_position(210, 45)
+    global Bro    
+    Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
+    Bro.set_position(150,70)
 # Spilløkken som sørger for interaktivitet i spillet.
 def on_update():
 
@@ -241,16 +264,23 @@ def on_update():
     if(playerChar.overlaps_with(Til_LoreTile)):
         pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop):
-            tiles.set_current_tilemap(tilemap("Lore_Level")) # Endrer tilemap
-                    # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-            sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-            playerChar.set_position(245,140)
-            bod = sprites.create(assets.image("Bod"), SpriteKind.food)
-            bod.set_position(210, 45)
-            Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
-            Bro.set_position(150,70)
+            Lore_Level()
         else:
             playerChar.set_position(40, 90) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+    ##Prøver å Gi mulighet for Kjeks
+
+    if(Bro and playerChar.overlaps_with(Bro) and teller == 0):
+        pause_until(VilHaKjeks)
+        if(Kjeks and gold > 1):
+            inventory.append("Kjeks x1")
+            playerChar.set_position(150, 90)
+            teller = 4
+        else:
+            playerChar.set_position(150,90)
+        
+
+
 
     if(playerChar.overlaps_with(BandittEnter)):
         pause_until(onPauseUntilEnter)
@@ -268,12 +298,12 @@ def on_update():
         else:
             playerChar.set_position(128,30)
         
-
+    
 
 
 # Oppdaterer karakterens animasjon
     update_character_animation()
-
+        
 
 
                 
@@ -324,8 +354,16 @@ def update_character_animation():
                 assets.animation("heroWalkUp"), 200, True)
                  current_animation = "walk_up"
 
+# Skal bli Fighting
+def Fighting():
+
+    if(playerChar.overlaps_with(Bantitt1) and controller.A.is_pressed()):
+            if(current_animation = walk_down):
+                current_animation = "Hero_Stab_Down"
+
 # Oppgir at vår on_update-funksjon skal fungere som on_update,
 # dvs. det som fungerer som spilløkken som oppdateres kontinuerlig
 # og sørger for at spillet blir interaktivt.
 game.on_update(on_update)
+
 

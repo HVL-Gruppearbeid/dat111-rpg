@@ -19,7 +19,8 @@ let equipmentDatabase = {
 // ######################
 //  Setter startverdi for gull i en vanlig variabel 
 //  Vi oppdaterer denne senere når karakteren åpner en kiste og kjøper/selger ting i butikken.
-let gold = 0
+let gold = 20
+let teller = 0
 //  Grunnivået på ferdighetene til karakteren
 //  Uttrykt ved hjelp av en ordbok/dictionary (nøkkel : verdi)
 let stats = {
@@ -82,6 +83,9 @@ field_level()
 //  Variabel for å holde kontroll på om spilleren vil inn i butikken.
 let enterShop = false
 let exitShop = false
+let Kjeks = false
+let Bro : Sprite = null
+let bod : Sprite = null
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
 function onPauseUntilEnter(): boolean {
@@ -154,6 +158,20 @@ function Banditt_Level() {
     BandittExit.setPosition(128, 0)
 }
 
+function Lore_Level() {
+    tiles.setCurrentTilemap(tilemap`Lore_Level`)
+    //  Endrer tilemap
+    //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+    playerChar.setPosition(245, 140)
+    
+    bod = sprites.create(assets.image`Bod`, SpriteKind.Food)
+    bod.setPosition(210, 45)
+    
+    Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
+    Bro.setPosition(150, 70)
+}
+
 //  Spilløkken som sørger for interaktivitet i spillet.
 // def venstre_slipp():
 //    animation.run_image_animation(playerChar,
@@ -211,8 +229,7 @@ function update_character_animation() {
 //  dvs. det som fungerer som spilløkken som oppdateres kontinuerlig
 //  og sørger for at spillet blir interaktivt.
 game.onUpdate(function on_update() {
-    let bod: Sprite;
-    let Bro: Sprite;
+    let teller: number;
     //  Taco-spriten blir "spist" dersom spillerkarakteren sin sprite overlapper den.
     //  Dette gjøres ved å spille av et lydklipp og sette resterende livstid for sprite til 0.
     if (playerChar.overlapsWith(taco)) {
@@ -269,15 +286,7 @@ game.onUpdate(function on_update() {
         pauseUntil(onPauseUntilEnter)
         //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop) {
-            tiles.setCurrentTilemap(tilemap`Lore_Level`)
-            //  Endrer tilemap
-            //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-            sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-            playerChar.setPosition(245, 140)
-            bod = sprites.create(assets.image`Bod`, SpriteKind.Food)
-            bod.setPosition(210, 45)
-            Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
-            Bro.setPosition(150, 70)
+            Lore_Level()
         } else {
             playerChar.setPosition(40, 90)
         }
@@ -285,6 +294,23 @@ game.onUpdate(function on_update() {
     }
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    // #Prøver å Gi mulighet for Kjeks
+    if (Bro && playerChar.overlapsWith(Bro) && teller == 0) {
+        pauseUntil(function VilHaKjeks(): boolean {
+            
+            Kjeks = game.ask("Vil du kjøpe en Kjeks for 1 gull?")
+            return true
+        })
+        if (Kjeks && gold > 1) {
+            inventory.push("Kjeks x1")
+            playerChar.setPosition(150, 90)
+            teller = 4
+        } else {
+            playerChar.setPosition(150, 90)
+        }
+        
+    }
+    
     if (playerChar.overlapsWith(BandittEnter)) {
         pauseUntil(onPauseUntilEnter)
         if (enterShop) {
