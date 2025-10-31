@@ -4,7 +4,7 @@
 // Klassedeklarasjoner
 namespace SpriteKind {
     export const exit = SpriteKind.create()
-    export const skills = SpriteKind.create()
+    export const potions = SpriteKind.create()
     export const npc = SpriteKind.create()
 }
 
@@ -58,6 +58,22 @@ controller.moveSprite(playerChar)
 //  Oppretter sprite for en taco og setter dens posisjon.
 let taco = sprites.create(assets.image`taco`, SpriteKind.Food)
 taco.setPosition(10, 100)
+// ## Potions ###
+let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.potions)
+strPotion.setPosition(0, 0)
+let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.potions)
+intellectPotion.setPosition(0, 0)
+let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.potions)
+agilityPotion.setPosition(0, 0)
+let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.potions)
+speedPotion.setPosition(0, 0)
+let choice = false
+function purchaseYes(): boolean {
+    
+    choice = game.ask("Kjøp en potion?", "Strength: 20 Gull")
+    return true
+}
+
 // ##Teleportører###
 let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
 Til_LoreTile.setPosition(0, 100)
@@ -114,6 +130,7 @@ function Destroy_Sprites() {
 //  LEVELS #
 // ##############
 function butikk_level() {
+    
     tiles.setCurrentTilemap(tilemap`shopInterior`)
     //  Endrer tilemap
     shopExit.setPosition(120, 180)
@@ -125,14 +142,15 @@ function butikk_level() {
     // ## Bod i butikken ###
     let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
     bodButikk.setPosition(120, 72)
-    let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.skills)
-    strPotion.setPosition(105, 72)
-    let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.skills)
-    intellectPotion.setPosition(115, 72)
-    let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.skills)
-    agilityPotion.setPosition(125, 72)
-    let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.skills)
-    speedPotion.setPosition(135, 72)
+    // ## Potions Posisjon ###
+    strPotion = sprites.create(assets.image`strPotion`, SpriteKind.potions)
+    strPotion.setPosition(90, 120)
+    intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.potions)
+    intellectPotion.setPosition(110, 120)
+    agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.potions)
+    agilityPotion.setPosition(130, 120)
+    speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.potions)
+    speedPotion.setPosition(150, 120)
 }
 
 function field_level() {
@@ -152,7 +170,7 @@ function Banditt_Level() {
     
     tiles.setCurrentTilemap(tilemap`Banditt_Level`)
     sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-    sprites.destroyAllSpritesOfKind(SpriteKind.skills)
+    sprites.destroyAllSpritesOfKind(SpriteKind.potions)
     playerChar.setPosition(128, 30)
     Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
     Banditt.setPosition(128, 145)
@@ -246,6 +264,7 @@ function Fighting() {
 //  dvs. det som fungerer som spilløkken som oppdateres kontinuerlig
 //  og sørger for at spillet blir interaktivt.
 game.onUpdate(function on_update() {
+    let purchasePotion: boolean;
     let teller: number;
     //  Taco-spriten blir "spist" dersom spillerkarakteren sin sprite overlapper den.
     //  Dette gjøres ved å spille av et lydklipp og sette resterende livstid for sprite til 0.
@@ -293,7 +312,7 @@ game.onUpdate(function on_update() {
         if (exitShop) {
             field_level()
         } else {
-            playerChar.setPosition(128, 70)
+            playerChar.setPosition(120, 150)
         }
         
     }
@@ -311,6 +330,20 @@ game.onUpdate(function on_update() {
     }
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    // ## Spør spiller om de vil kjøpe strength potion ###
+    if (strPotion !== null && playerChar.overlapsWith(strPotion)) {
+        purchaseYes()
+        if (choice) {
+            stats["strength"] += 2
+            game.showLongText("You got + 2 Strength", DialogLayout.Bottom)
+        } else {
+            purchasePotion = false
+            playerChar.setPosition(120, 150)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.    
     // #Prøver å Gi mulighet for Kjeks
     if (Bro && playerChar.overlapsWith(Bro) && teller == 0) {
         pauseUntil(function VilHaKjeks(): boolean {

@@ -7,7 +7,7 @@
 class SpriteKind:
     exit = SpriteKind.create()
     
-    skills = SpriteKind.create()
+    potions = SpriteKind.create()
 
     npc = SpriteKind.create()
     
@@ -69,6 +69,25 @@ controller.move_sprite(playerChar)
 taco = sprites.create(assets.image("taco"), SpriteKind.food)
 taco.set_position(10, 100)
 
+### Potions ###
+strPotion = sprites.create(assets.image("strPotion"), SpriteKind.potions)
+strPotion.set_position(0, 0)
+
+intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.potions)
+intellectPotion.set_position(0, 0)
+
+agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.potions)
+agilityPotion.set_position(0, 0)
+    
+speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.potions)
+speedPotion.set_position(0, 0)
+
+choice = False
+
+def purchaseYes():
+    global choice
+    choice = game.ask("Kjøp en potion?", "Strength: 20 Gull")
+    return True
 
 ###Teleportører###
 Til_LoreTile = sprites.create(assets.image("Til_Lore"), SpriteKind.food)
@@ -147,6 +166,8 @@ def VilHaKjeks():
 # LEVELS #
 ###############
 def butikk_level():
+    global strPotion, intellectPotion, agilityPotion, speedPotion
+
     tiles.set_current_tilemap(tilemap("shopInterior")) # Endrer tilemap
     shopExit.set_position(120,180)
     playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
@@ -158,17 +179,18 @@ def butikk_level():
     bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
     bodButikk.set_position(120, 72)
 
-    strPotion = sprites.create(assets.image("strPotion"), SpriteKind.skills)
-    strPotion.set_position(105, 72)
+    ### Potions Posisjon ###
+    strPotion = sprites.create(assets.image("strPotion"), SpriteKind.potions)
+    strPotion.set_position(90, 120)
 
-    intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.skills)
-    intellectPotion.set_position(115, 72)
+    intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.potions)
+    intellectPotion.set_position(110, 120)
 
-    agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.skills)
-    agilityPotion.set_position(125, 72)
+    agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.potions)
+    agilityPotion.set_position(130, 120)
     
-    speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.skills)
-    speedPotion.set_position(135, 72)
+    speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.potions)
+    speedPotion.set_position(150, 120)
  
 
 
@@ -190,7 +212,7 @@ def Banditt_Level():
     global Banditt, Banditt2, Banditt3, BandittExit
     tiles.set_current_tilemap(tilemap("Banditt_Level"))
     sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-    sprites.destroy_all_sprites_of_kind(SpriteKind.skills)
+    sprites.destroy_all_sprites_of_kind(SpriteKind.potions)
     playerChar.set_position(128, 30)
 
 
@@ -261,7 +283,7 @@ def on_update():
             field_level()
             
         else:
-            playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+            playerChar.set_position(120,150) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
 
     if(playerChar.overlaps_with(Til_LoreTile)):
@@ -270,6 +292,18 @@ def on_update():
             Lore_Level()
         else:
             playerChar.set_position(40, 90) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+### Spør spiller om de vil kjøpe strength potion ###
+    if(strPotion is not None and playerChar.overlaps_with(strPotion)):
+        purchaseYes()
+        if(choice):
+            stats["strength"] += 2
+            game.show_long_text("You got + 2 Strength", DialogLayout.BOTTOM)
+        else:
+            purchasePotion = False 
+            playerChar.set_position(120,150) # Flytter karakteren til en posisjon som ikke overlapper med butikken.    
+
+
 
     ##Prøver å Gi mulighet for Kjeks
 
