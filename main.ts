@@ -70,6 +70,10 @@ let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
 treasure.setPosition(200, 150)
 //  Angir at kisten ikke er åpnet enda, slik at vi senere unngå at gull gis mer enn en gang til spilleren.
 let treasureNotOpened = true
+// ## Banditter ###
+let Banditt : Sprite = null
+let Banditt2 : Sprite = null
+let Banditt3 : Sprite = null
 // ## Musikk ###
 //  Starter bakgrunnsmusikk som er et lydspor lagret i Assets.
 //  Setter PlaybackMode til en verdi som gjør at sporet spilles kontinuerlig i bakgrunnen.
@@ -145,15 +149,16 @@ function field_level() {
 }
 
 function Banditt_Level() {
+    
     tiles.setCurrentTilemap(tilemap`Banditt_Level`)
     sprites.destroyAllSpritesOfKind(SpriteKind.Food)
     sprites.destroyAllSpritesOfKind(SpriteKind.skills)
     playerChar.setPosition(128, 30)
-    let Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
+    Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
     Banditt.setPosition(128, 145)
-    let Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
+    Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
     Banditt2.setPosition(148, 130)
-    let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
+    Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
     Banditt3.setPosition(100, 130)
     BandittExit.setPosition(128, 0)
 }
@@ -219,6 +224,18 @@ function update_character_animation() {
             //  Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
             animation.runImageAnimation(playerChar, assets.animation`heroWalkUp`, 200, true)
             current_animation = "walk_up"
+        }
+        
+    }
+    
+}
+
+//  Skal bli Fighting
+function Fighting() {
+    let current_animation: string;
+    if (playerChar.overlapsWith(Banditt) && controller.A.isPressed()) {
+        if (current_animation == "walk_down") {
+            current_animation = "Hero_Stab_Down"
         }
         
     }

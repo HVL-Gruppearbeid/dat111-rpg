@@ -90,8 +90,10 @@ treasureNotOpened = True
 
 
 
-
-
+### Banditter ###
+Banditt: Sprite = None
+Banditt2: Sprite = None
+Banditt3: Sprite = None
 
 
 
@@ -185,6 +187,7 @@ def field_level():
     shopExit.set_position(128,300)
 
 def Banditt_Level():
+    global Banditt, Banditt2, Banditt3, BandittExit
     tiles.set_current_tilemap(tilemap("Banditt_Level"))
     sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     sprites.destroy_all_sprites_of_kind(SpriteKind.skills)
@@ -342,10 +345,10 @@ def update_character_animation():
 
     if(controller.down.is_pressed()):
          if(current_animation != "walk_down"): # Unngår å overskrive pågående animasjon
-             # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-             animation.run_image_animation(playerChar,
-             assets.animation("heroWalkDown"), 200, True)
-             current_animation = "walk_down"
+              # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
+                 animation.run_image_animation(playerChar,
+                 assets.animation("heroWalkDown"), 200, True)
+                 current_animation = "walk_down"
 
     if(controller.up.is_pressed()):
             if(current_animation != "walk_up"): # Unngår å overskrive pågående animasjon
@@ -357,8 +360,8 @@ def update_character_animation():
 # Skal bli Fighting
 def Fighting():
 
-    if(playerChar.overlaps_with(Bantitt1) and controller.A.is_pressed()):
-            if(current_animation = walk_down):
+    if(playerChar.overlaps_with(Banditt) and controller.A.is_pressed()):
+            if(current_animation == "walk_down"):
                 current_animation = "Hero_Stab_Down"
 
 # Oppgir at vår on_update-funksjon skal fungere som on_update,
