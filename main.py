@@ -8,8 +8,8 @@ class SpriteKind:
     exit = SpriteKind.create()
     potions = SpriteKind.create()
     npc = SpriteKind.create()
-
-
+    shop_level = SpriteKind.create()
+    main_level = SpriteKind.create()
 
     
 # Oversikt over utstyret som finnes i spillet.
@@ -74,24 +74,24 @@ taco = sprites.create(assets.image("taco"), SpriteKind.food)
 taco.set_position(10, 100)
 
 ### Shop ###
-shop = sprites.create(assets.image("house"), SpriteKind.food)
+shop = sprites.create(assets.image("house"), SpriteKind.main_level)
 shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
-butikkEier = sprites.create(assets.image("ButikkEier"), SpriteKind.Food)
+butikkEier = sprites.create(assets.image("ButikkEier"), SpriteKind.shop_level)
 butikkEier.set_position(0, 0)
-bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
+bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.shop_level)
 bodButikk.set_position(0, 0)
 
 ### Potions ###
-strPotion = sprites.create(assets.image("strPotion"), SpriteKind.potions)
+strPotion = sprites.create(assets.image("strPotion"), SpriteKind.shop_level)
 strPotion.set_position(0, 0)
 
-intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.potions)
+intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.shop_level)
 intellectPotion.set_position(0, 0)
 
-agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.potions)
+agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.shop_level)
 agilityPotion.set_position(0, 0)
     
-speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.potions)
+speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.shop_level)
 speedPotion.set_position(0, 0)
 
 
@@ -106,7 +106,7 @@ Banditt3.set_position(0, 0)
 
     
     
-
+### Vil kjøpe potion? ###
 choice = False
 
 def purchaseYes():
@@ -130,14 +130,6 @@ treasure = sprites.create(assets.image("chestClosed"), SpriteKind.food)
 treasure.set_position(200, 150)
 # Angir at kisten ikke er åpnet enda, slik at vi senere unngå at gull gis mer enn en gang til spilleren.
 treasureNotOpened = True 
-
-
-
-### Banditter ###
-#Banditt: Sprite = None
-#Banditt2: Sprite = None
-#Banditt3: Sprite = None
-
 
 
 ### Musikk ###
@@ -190,36 +182,6 @@ def VilHaKjeks():
 ###############
 # LEVELS #
 ###############
-def butikk_level():
-    global strPotion, intellectPotion, agilityPotion, speedPotion
-
-    tiles.set_current_tilemap(tilemap("shopInterior")) # Endrer tilemap
-    shopExit.set_position(120,180)
-    playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
-    ### Butikk-fyren ###
-    
-    butikkEier.set_position(120, 65)
-    
-    ### Bod i butikken ###
-    
-    bodButikk.set_position(120, 72)
-
-    ### Potions Posisjon ###
-    strPotion.set_position(90, 100)  
-    intellectPotion.set_position(110, 100)
-    agilityPotion.set_position(130, 100)
-    speedPotion.set_position(150, 100)
-
-
-    ### Flytter unødvendige sprites off screen
-    #Bandits, taco, chest, Shop
-    Banditt.set_position(0, 0)
-    Banditt2.set_position(0, 0)
-    Banditt3.set_position(0, 0)
-    taco.set_position(0, 0)
-    shop.set_position(0, 0)
- 
-
 
 
 
@@ -246,13 +208,41 @@ def field_level():
     Banditt.set_position(0, 0)
     Banditt2.set_position(0, 0)
     Banditt3.set_position(0, 0)
-        
+
+def butikk_level():
+    global strPotion, intellectPotion, agilityPotion, speedPotion
+
+    tiles.set_current_tilemap(tilemap("shopInterior")) # Endrer tilemap
+    shopExit.set_position(120,180)
+    playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
+    # Butikk-fyren #
+    
+    butikkEier.set_position(120, 65)
+    
+    # Bod i butikken #
+    
+    bodButikk.set_position(120, 72)
+
+    # Potions Posisjon #
+    strPotion.set_position(90, 100)
+    intellectPotion.set_position(110, 100)
+    agilityPotion.set_position(130, 100)
+    speedPotion.set_position(150, 100)
+
+
+    # Flytter unødvendige sprites off screen #
+    #Bandits, taco, chest, Shop, treasure, bro #
+    Banditt.set_position(0, 0)
+    Banditt2.set_position(0, 0)
+    Banditt3.set_position(0, 0)
+    taco.set_position(0, 0)
+    shop.set_position(0, 0)
+    treasure.set_position(0, 0)
+    Til_LoreTile.set_position(0, 0) 
 
 def Banditt_Level():
     global Banditt, Banditt2, Banditt3, BandittExit
     tiles.set_current_tilemap(tilemap("Banditt_Level"))
-    #sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-    #sprites.destroy_all_sprites_of_kind(SpriteKind.potions)
     playerChar.set_position(128, 70)
     shop.set_position(0, 0)
     butikkEier.set_position(0, 0)
@@ -261,6 +251,8 @@ def Banditt_Level():
     intellectPotion.set_position(0, 0)
     agilityPotion.set_position(0, 0)
     speedPotion.set_position(0, 0)
+    treasure.set_position(0, 0)
+    taco.set_position(0, 0)
 
 
     Banditt.set_position(128, 145)
@@ -273,6 +265,7 @@ def Lore_Level():
     tiles.set_current_tilemap(tilemap("Lore_Level")) # Endrer tilemap
                         # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
     #sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    
     playerChar.set_position(245,140)
     global bod
     bod = sprites.create(assets.image("Bod"), SpriteKind.food)
@@ -280,6 +273,9 @@ def Lore_Level():
     global Bro    
     Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
     Bro.set_position(150,70)
+
+    #Fjener butikken
+    shop.set_position(0, 0)
 # Spilløkken som sørger for interaktivitet i spillet.
 def on_update():
 
@@ -457,7 +453,7 @@ def update_character_animation():
         
         
             #controller.left.on_event(ControllerButtonEvent.RELEASED, venstre_slipp)
-
+        
 
     if(controller.right.is_pressed()):
          if(current_animation != "walk_right"): # Unngår å overskrive pågående animasjon
@@ -485,7 +481,8 @@ def Fighting():
 
     if(playerChar.overlaps_with(Banditt) or playerChar.overlaps_with(Banditt2) or playerChar.overlaps_with(Banditt3)):
             if(current_animation == "walk_down"):
-                current_animation = "Hero_Stab_Down"
+                current_animation = "Hero_Stab_Front"
+
 
 # Oppgir at vår on_update-funksjon skal fungere som on_update,
 # dvs. det som fungerer som spilløkken som oppdateres kontinuerlig

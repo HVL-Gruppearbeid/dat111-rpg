@@ -6,6 +6,8 @@ namespace SpriteKind {
     export const exit = SpriteKind.create()
     export const potions = SpriteKind.create()
     export const npc = SpriteKind.create()
+    export const shop_level = SpriteKind.create()
+    export const main_level = SpriteKind.create()
 }
 
 //  Oversikt over utstyret som finnes i spillet.
@@ -61,20 +63,20 @@ controller.moveSprite(playerChar)
 let taco = sprites.create(assets.image`taco`, SpriteKind.Food)
 taco.setPosition(10, 100)
 // ## Shop ###
-let shop = sprites.create(assets.image`house`, SpriteKind.Food)
+let shop = sprites.create(assets.image`house`, SpriteKind.main_level)
 let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
-let butikkEier = sprites.create(assets.image`ButikkEier`, SpriteKind.Food)
+let butikkEier = sprites.create(assets.image`ButikkEier`, SpriteKind.shop_level)
 butikkEier.setPosition(0, 0)
-let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
+let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.shop_level)
 bodButikk.setPosition(0, 0)
 // ## Potions ###
-let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.potions)
+let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.shop_level)
 strPotion.setPosition(0, 0)
-let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.potions)
+let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.shop_level)
 intellectPotion.setPosition(0, 0)
-let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.potions)
+let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.shop_level)
 agilityPotion.setPosition(0, 0)
-let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.potions)
+let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.shop_level)
 speedPotion.setPosition(0, 0)
 // ## Bandits ###
 let Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
@@ -83,6 +85,7 @@ let Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
 Banditt2.setPosition(0, 0)
 let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
 Banditt3.setPosition(0, 0)
+// ## Vil kjøpe potion? ###
 let choice = false
 function purchaseYes(): boolean {
     
@@ -101,10 +104,6 @@ let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
 treasure.setPosition(200, 150)
 //  Angir at kisten ikke er åpnet enda, slik at vi senere unngå at gull gis mer enn en gang til spilleren.
 let treasureNotOpened = true
-// ## Banditter ###
-// Banditt: Sprite = None
-// Banditt2: Sprite = None
-// Banditt3: Sprite = None
 // ## Musikk ###
 //  Starter bakgrunnsmusikk som er et lydspor lagret i Assets.
 //  Setter PlaybackMode til en verdi som gjør at sporet spilles kontinuerlig i bakgrunnen.
@@ -143,31 +142,6 @@ function Destroy_Sprites() {
 // ##############
 //  LEVELS #
 // ##############
-function butikk_level() {
-    
-    tiles.setCurrentTilemap(tilemap`shopInterior`)
-    //  Endrer tilemap
-    shopExit.setPosition(120, 180)
-    playerChar.setPosition(120, 160)
-    //  Oppdaterer spillerens posisjon
-    // ## Butikk-fyren ###
-    butikkEier.setPosition(120, 65)
-    // ## Bod i butikken ###
-    bodButikk.setPosition(120, 72)
-    // ## Potions Posisjon ###
-    strPotion.setPosition(90, 100)
-    intellectPotion.setPosition(110, 100)
-    agilityPotion.setPosition(130, 100)
-    speedPotion.setPosition(150, 100)
-    // ## Flytter unødvendige sprites off screen
-    // Bandits, taco, chest, Shop
-    Banditt.setPosition(0, 0)
-    Banditt2.setPosition(0, 0)
-    Banditt3.setPosition(0, 0)
-    taco.setPosition(0, 0)
-    shop.setPosition(0, 0)
-}
-
 function field_level() {
     tiles.setCurrentTilemap(tilemap`field_level`)
     // Endrer tilemap
@@ -192,11 +166,36 @@ function field_level() {
     Banditt3.setPosition(0, 0)
 }
 
+function butikk_level() {
+    
+    tiles.setCurrentTilemap(tilemap`shopInterior`)
+    //  Endrer tilemap
+    shopExit.setPosition(120, 180)
+    playerChar.setPosition(120, 160)
+    //  Oppdaterer spillerens posisjon
+    //  Butikk-fyren #
+    butikkEier.setPosition(120, 65)
+    //  Bod i butikken #
+    bodButikk.setPosition(120, 72)
+    //  Potions Posisjon #
+    strPotion.setPosition(90, 100)
+    intellectPotion.setPosition(110, 100)
+    agilityPotion.setPosition(130, 100)
+    speedPotion.setPosition(150, 100)
+    //  Flytter unødvendige sprites off screen #
+    // Bandits, taco, chest, Shop, treasure, bro #
+    Banditt.setPosition(0, 0)
+    Banditt2.setPosition(0, 0)
+    Banditt3.setPosition(0, 0)
+    taco.setPosition(0, 0)
+    shop.setPosition(0, 0)
+    treasure.setPosition(0, 0)
+    Til_LoreTile.setPosition(0, 0)
+}
+
 function Banditt_Level() {
     
     tiles.setCurrentTilemap(tilemap`Banditt_Level`)
-    // sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-    // sprites.destroy_all_sprites_of_kind(SpriteKind.potions)
     playerChar.setPosition(128, 70)
     shop.setPosition(0, 0)
     butikkEier.setPosition(0, 0)
@@ -205,6 +204,8 @@ function Banditt_Level() {
     intellectPotion.setPosition(0, 0)
     agilityPotion.setPosition(0, 0)
     speedPotion.setPosition(0, 0)
+    treasure.setPosition(0, 0)
+    taco.setPosition(0, 0)
     Banditt.setPosition(128, 145)
     Banditt2.setPosition(148, 130)
     Banditt3.setPosition(100, 130)
@@ -223,6 +224,8 @@ function Lore_Level() {
     
     Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
     Bro.setPosition(150, 70)
+    // Fjener butikken
+    shop.setPosition(0, 0)
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
@@ -283,7 +286,7 @@ function Fighting() {
     let current_animation: string;
     if (playerChar.overlapsWith(Banditt) || playerChar.overlapsWith(Banditt2) || playerChar.overlapsWith(Banditt3)) {
         if (current_animation == "walk_down") {
-            current_animation = "Hero_Stab_Down"
+            current_animation = "Hero_Stab_Front"
         }
         
     }
