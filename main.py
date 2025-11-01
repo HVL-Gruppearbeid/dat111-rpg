@@ -6,10 +6,11 @@
 @namespace
 class SpriteKind:
     exit = SpriteKind.create()
-    
     potions = SpriteKind.create()
-
     npc = SpriteKind.create()
+
+
+
     
 # Oversikt over utstyret som finnes i spillet.
 # Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
@@ -54,6 +55,9 @@ current_animation = "idle"
 
 tiles.set_current_tilemap(tilemap("field_level"))
 
+# Usikker på om det er en bug, men etter at sprites blir ødelagt, også 'created' på nytt, så fungerer ikke overlaps_with med den samme spriten lengre.
+# Som en skitten workaround, så blir alle sprites generert ved oppstart, og flyttet off map, og flyttet inn igjen ved tilemap change.
+
 
 ### Karakteren ###
 # Oppretter den visuelle representasjonen av karakteren som en sprite ("bevegelig bilde").
@@ -69,6 +73,14 @@ controller.move_sprite(playerChar)
 taco = sprites.create(assets.image("taco"), SpriteKind.food)
 taco.set_position(10, 100)
 
+### Shop ###
+shop = sprites.create(assets.image("house"), SpriteKind.food)
+shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
+butikkEier = sprites.create(assets.image("ButikkEier"), SpriteKind.Food)
+butikkEier.set_position(0, 0)
+bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
+bodButikk.set_position(0, 0)
+
 ### Potions ###
 strPotion = sprites.create(assets.image("strPotion"), SpriteKind.potions)
 strPotion.set_position(0, 0)
@@ -81,6 +93,19 @@ agilityPotion.set_position(0, 0)
     
 speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.potions)
 speedPotion.set_position(0, 0)
+
+
+
+### Bandits ###
+Banditt = sprites.create(assets.image("Banditt"), SpriteKind.npc)
+Banditt.set_position(0, 0)
+Banditt2 = sprites.create(assets.image("Banditt2"), SpriteKind.npc)
+Banditt2.set_position(0, 0)
+Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.npc)
+Banditt3.set_position(0, 0)
+
+    
+    
 
 choice = False
 
@@ -110,9 +135,9 @@ treasureNotOpened = True
 
 
 ### Banditter ###
-Banditt: Sprite = None
-Banditt2: Sprite = None
-Banditt3: Sprite = None
+#Banditt: Sprite = None
+#Banditt2: Sprite = None
+#Banditt3: Sprite = None
 
 
 
@@ -122,8 +147,7 @@ Banditt3: Sprite = None
 music.play(music.create_song(assets.song("backgroundSong")), 
 music.PlaybackMode.LOOPING_IN_BACKGROUND)
 
-shop = sprites.create(assets.image("house"), SpriteKind.food)
-shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
+
 
 
 field_level()
@@ -152,6 +176,7 @@ def onPauseUntilExit():
     exitShop = game.ask("Exit?")
     return True
 
+
 def Destroy_Sprites():
     sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
@@ -172,25 +197,27 @@ def butikk_level():
     shopExit.set_position(120,180)
     playerChar.set_position(120,160) # Oppdaterer spillerens posisjon
     ### Butikk-fyren ###
-    butikkEier = sprites.create(assets.image("ButikkEier"), SpriteKind.Food)
+    
     butikkEier.set_position(120, 65)
     
     ### Bod i butikken ###
-    bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.Food)
+    
     bodButikk.set_position(120, 72)
 
     ### Potions Posisjon ###
-    strPotion = sprites.create(assets.image("strPotion"), SpriteKind.potions)
-    strPotion.set_position(90, 120)
-
-    intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.potions)
+    strPotion.set_position(90, 120)  
     intellectPotion.set_position(110, 120)
-
-    agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.potions)
     agilityPotion.set_position(130, 120)
-    
-    speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.potions)
     speedPotion.set_position(150, 120)
+
+
+    ### Flytter unødvendige sprites off screen
+    #Bandits, taco, chest, Shop
+    Banditt.set_position(0, 0)
+    Banditt2.set_position(0, 0)
+    Banditt3.set_position(0, 0)
+    taco.set_position(0, 0)
+    shop.set_position(0, 0)
  
 
 
@@ -207,22 +234,37 @@ def field_level():
     shopExit.set_position(128,300)
     playerChar.set_position(128, 230) # Oppdaterer spillerens posisjon
     shopExit.set_position(128,300)
+    taco.set_position(10, 100)
+
+    #Flytter på unødvendige Destroy_Sprites
+    butikkEier.set_position(0, 0)
+    bodButikk.set_position(0, 0)
+    strPotion.set_position(0, 0)
+    intellectPotion.set_position(0, 0)
+    agilityPotion.set_position(0, 0)
+    speedPotion.set_position(0, 0)
+    Banditt.set_position(0, 0)
+    Banditt2.set_position(0, 0)
+    Banditt3.set_position(0, 0)
+        
 
 def Banditt_Level():
     global Banditt, Banditt2, Banditt3, BandittExit
     tiles.set_current_tilemap(tilemap("Banditt_Level"))
-    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-    sprites.destroy_all_sprites_of_kind(SpriteKind.potions)
-    playerChar.set_position(128, 30)
+    #sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    #sprites.destroy_all_sprites_of_kind(SpriteKind.potions)
+    playerChar.set_position(128, 70)
+    shop.set_position(0, 0)
+    butikkEier.set_position(0, 0)
+    bodButikk.set_position(0, 0)
+    strPotion.set_position(0, 0)
+    intellectPotion.set_position(0, 0)
+    agilityPotion.set_position(0, 0)
+    speedPotion.set_position(0, 0)
 
 
-    Banditt = sprites.create(assets.image("Banditt"), SpriteKind.npc)
     Banditt.set_position(128, 145)
-
-    Banditt2 = sprites.create(assets.image("Banditt2"), SpriteKind.npc)
     Banditt2.set_position(148, 130)
-
-    Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.npc)
     Banditt3.set_position(100, 130)
 
     BandittExit.set_position(128, 0)
@@ -230,7 +272,7 @@ def Banditt_Level():
 def Lore_Level():
     tiles.set_current_tilemap(tilemap("Lore_Level")) # Endrer tilemap
                         # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    #sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     playerChar.set_position(245,140)
     global bod
     bod = sprites.create(assets.image("Bod"), SpriteKind.food)
@@ -329,8 +371,8 @@ def on_update():
     if(playerChar.overlaps_with(BandittExit)):
         pause_until(onPauseUntilExit)
         if(enterShop):
-            sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
-            sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
+            #sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
+            #sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
             field_level()
         else:
             playerChar.set_position(128,30)
@@ -394,7 +436,7 @@ def update_character_animation():
 # Skal bli Fighting
 def Fighting():
 
-    if(playerChar.overlaps_with(Banditt) and controller.A.is_pressed()):
+    if(playerChar.overlaps_with(Banditt) or playerChar.overlaps_with(Banditt2) or playerChar.overlaps_with(Banditt3)):
             if(current_animation == "walk_down"):
                 current_animation = "Hero_Stab_Down"
 

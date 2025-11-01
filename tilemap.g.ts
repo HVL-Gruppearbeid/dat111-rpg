@@ -9,25 +9,6 @@ namespace myTiles {
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
-            case "Banditt_Level":
-            case "Banditt_level1":return tiles.createTilemap(hex`100010000909090909090302020409090a010a080909090909090302020409090901010a09080808090903020204090909080a08010a010808090302020409090909080a08010a0a080903020204080909090808080801080909030202040109090909090a0808080909030202040808090909090108080809090302020408010909090908080108090906050507090909090909080a080a0909090909090909090909090a080808090909090909090909090909090a09090909090909090909090809090909090901010809090909090a0801080909090101010a090909090908010108090909090a08090909090901080a080a09090909090909090909090a01010a08`, img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-`, [myTiles.transparency16,sprites.castle.tileGrass2,sprites.castle.tilePath5,sprites.castle.tilePath4,sprites.castle.tilePath6,sprites.castle.tilePath8,sprites.castle.tilePath7,sprites.castle.tilePath9,sprites.castle.tileGrass1,sprites.skillmap.islandTile4,sprites.castle.tileGrass3], TileScale.Sixteen);
             case "Hund_Level":
             case "Hund_Level1":return tiles.createTilemap(hex`1000100007070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070704040404040202020202020207070707040505050401010101010101070707070405060504010101010101010707070704050505040101010101010107070707040404040403030303030303070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707070707`, img`
 . . . . . . . . . . . . . . . . 
@@ -142,6 +123,25 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, [myTiles.transparency16,sprites.dungeon.darkGroundCenter,sprites.dungeon.stairNorth,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundSouthWest0,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundSouth], TileScale.Sixteen);
+            case "Banditt_Level":
+            case "Banditt_level1":return tiles.createTilemap(hex`10001000090909090b090302020409090a010a08090909090b090302020409090901010a090808080b0903020204090909080a080b0b0b0b0b090302020409090909080a08010a0a080903020204080909090808080801080909030202040109090909090a0808080909030202040808090909090108080809090302020408010909090908080108090906050507090909090909080a080a0909090909090909090909090a080808090909090909090909090909090a09090909090909090909090809090909090901010809090909090a0801080909090101010a090909090908010108090909090a08090909090901080a080a09090909090909090909090a01010a08`, img`
+. . . . 2 . . . . . . . . . . . 
+. . . . 2 . . . . . . . . . . . 
+. . . . 2 . . . . . . . . . . . 
+2 2 2 2 2 . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, [myTiles.transparency16,sprites.castle.tileGrass2,sprites.castle.tilePath5,sprites.castle.tilePath4,sprites.castle.tilePath6,sprites.castle.tilePath8,sprites.castle.tilePath7,sprites.castle.tilePath9,sprites.castle.tileGrass1,sprites.skillmap.islandTile4,sprites.castle.tileGrass3,sprites.builtin.brick], TileScale.Sixteen);
         }
         return null;
     })

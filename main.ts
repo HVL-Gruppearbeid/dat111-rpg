@@ -44,6 +44,8 @@ let current_animation = "idle"
 //  Setter tilemap, som er en samling av tiles/fliser som vi har satt sammen for å danne nivået vårt.
 //  Tilemaps og andre audiovisuelle elementer finner man under "Assets" i toppmenyen.
 tiles.setCurrentTilemap(tilemap`field_level`)
+//  Usikker på om det er en bug, men etter at sprites blir ødelagt, også 'created' på nytt, så fungerer ikke overlaps_with med den samme spriten lengre.
+//  Som en skitten workaround, så blir alle sprites generert ved oppstart, og flyttet off map, og flyttet inn igjen ved tilemap change.
 // ## Karakteren ###
 //  Oppretter den visuelle representasjonen av karakteren som en sprite ("bevegelig bilde").
 //  SpriteKind er en enum som lar oss kategorisere spriten for å senere enkelt kunne utføre operasjoner på sprites av samme kategori.
@@ -58,6 +60,13 @@ controller.moveSprite(playerChar)
 //  Oppretter sprite for en taco og setter dens posisjon.
 let taco = sprites.create(assets.image`taco`, SpriteKind.Food)
 taco.setPosition(10, 100)
+// ## Shop ###
+let shop = sprites.create(assets.image`house`, SpriteKind.Food)
+let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
+let butikkEier = sprites.create(assets.image`ButikkEier`, SpriteKind.Food)
+butikkEier.setPosition(0, 0)
+let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
+bodButikk.setPosition(0, 0)
 // ## Potions ###
 let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.potions)
 strPotion.setPosition(0, 0)
@@ -67,6 +76,13 @@ let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.potions)
 agilityPotion.setPosition(0, 0)
 let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.potions)
 speedPotion.setPosition(0, 0)
+// ## Bandits ###
+let Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
+Banditt.setPosition(0, 0)
+let Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
+Banditt2.setPosition(0, 0)
+let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
+Banditt3.setPosition(0, 0)
 let choice = false
 function purchaseYes(): boolean {
     
@@ -87,15 +103,13 @@ treasure.setPosition(200, 150)
 //  Angir at kisten ikke er åpnet enda, slik at vi senere unngå at gull gis mer enn en gang til spilleren.
 let treasureNotOpened = true
 // ## Banditter ###
-let Banditt : Sprite = null
-let Banditt2 : Sprite = null
-let Banditt3 : Sprite = null
+// Banditt: Sprite = None
+// Banditt2: Sprite = None
+// Banditt3: Sprite = None
 // ## Musikk ###
 //  Starter bakgrunnsmusikk som er et lydspor lagret i Assets.
 //  Setter PlaybackMode til en verdi som gjør at sporet spilles kontinuerlig i bakgrunnen.
 music.play(music.createSong(assets.song`backgroundSong`), music.PlaybackMode.LoopingInBackground)
-let shop = sprites.create(assets.image`house`, SpriteKind.Food)
-let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
 field_level()
 // #############
 //  Funksjoner #
@@ -137,20 +151,21 @@ function butikk_level() {
     playerChar.setPosition(120, 160)
     //  Oppdaterer spillerens posisjon
     // ## Butikk-fyren ###
-    let butikkEier = sprites.create(assets.image`ButikkEier`, SpriteKind.Food)
     butikkEier.setPosition(120, 65)
     // ## Bod i butikken ###
-    let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.Food)
     bodButikk.setPosition(120, 72)
     // ## Potions Posisjon ###
-    strPotion = sprites.create(assets.image`strPotion`, SpriteKind.potions)
     strPotion.setPosition(90, 120)
-    intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.potions)
     intellectPotion.setPosition(110, 120)
-    agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.potions)
     agilityPotion.setPosition(130, 120)
-    speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.potions)
     speedPotion.setPosition(150, 120)
+    // ## Flytter unødvendige sprites off screen
+    // Bandits, taco, chest, Shop
+    Banditt.setPosition(0, 0)
+    Banditt2.setPosition(0, 0)
+    Banditt3.setPosition(0, 0)
+    taco.setPosition(0, 0)
+    shop.setPosition(0, 0)
 }
 
 function field_level() {
@@ -164,19 +179,34 @@ function field_level() {
     playerChar.setPosition(128, 230)
     //  Oppdaterer spillerens posisjon
     shopExit.setPosition(128, 300)
+    taco.setPosition(10, 100)
+    // Flytter på unødvendige Destroy_Sprites
+    butikkEier.setPosition(0, 0)
+    bodButikk.setPosition(0, 0)
+    strPotion.setPosition(0, 0)
+    intellectPotion.setPosition(0, 0)
+    agilityPotion.setPosition(0, 0)
+    speedPotion.setPosition(0, 0)
+    Banditt.setPosition(0, 0)
+    Banditt2.setPosition(0, 0)
+    Banditt3.setPosition(0, 0)
 }
 
 function Banditt_Level() {
     
     tiles.setCurrentTilemap(tilemap`Banditt_Level`)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-    sprites.destroyAllSpritesOfKind(SpriteKind.potions)
-    playerChar.setPosition(128, 30)
-    Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
+    // sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    // sprites.destroy_all_sprites_of_kind(SpriteKind.potions)
+    playerChar.setPosition(128, 70)
+    shop.setPosition(0, 0)
+    butikkEier.setPosition(0, 0)
+    bodButikk.setPosition(0, 0)
+    strPotion.setPosition(0, 0)
+    intellectPotion.setPosition(0, 0)
+    agilityPotion.setPosition(0, 0)
+    speedPotion.setPosition(0, 0)
     Banditt.setPosition(128, 145)
-    Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
     Banditt2.setPosition(148, 130)
-    Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
     Banditt3.setPosition(100, 130)
     BandittExit.setPosition(128, 0)
 }
@@ -185,7 +215,7 @@ function Lore_Level() {
     tiles.setCurrentTilemap(tilemap`Lore_Level`)
     //  Endrer tilemap
     //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+    // sprites.destroy_all_sprites_of_kind(SpriteKind.food)
     playerChar.setPosition(245, 140)
     
     bod = sprites.create(assets.image`Bod`, SpriteKind.Food)
@@ -251,7 +281,7 @@ function update_character_animation() {
 //  Skal bli Fighting
 function Fighting() {
     let current_animation: string;
-    if (playerChar.overlapsWith(Banditt) && controller.A.isPressed()) {
+    if (playerChar.overlapsWith(Banditt) || playerChar.overlapsWith(Banditt2) || playerChar.overlapsWith(Banditt3)) {
         if (current_animation == "walk_down") {
             current_animation = "Hero_Stab_Down"
         }
@@ -374,8 +404,8 @@ game.onUpdate(function on_update() {
     if (playerChar.overlapsWith(BandittExit)) {
         pauseUntil(onPauseUntilExit)
         if (enterShop) {
-            sprites.destroyAllSpritesOfKind(SpriteKind.npc)
-            sprites.destroyAllSpritesOfKind(SpriteKind.exit)
+            // sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
+            // sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
             field_level()
         } else {
             playerChar.setPosition(128, 30)

@@ -16,25 +16,6 @@
         "tilemapTile": true,
         "displayName": "myTile"
     },
-    "Banditt_level1": {
-        "id": "Banditt_level1",
-        "mimeType": "application/mkcd-tilemap",
-        "data": "MTAxMDAwMTAwMDA5MDkwOTA5MDkwOTAzMDIwMjA0MDkwOTBhMDEwYTA4MDkwOTA5MDkwOTA5MDMwMjAyMDQwOTA5MDkwMTAxMGEwOTA4MDgwODA5MDkwMzAyMDIwNDA5MDkwOTA4MGEwODAxMGEwMTA4MDgwOTAzMDIwMjA0MDkwOTA5MDkwODBhMDgwMTBhMGEwODA5MDMwMjAyMDQwODA5MDkwOTA4MDgwODA4MDEwODA5MDkwMzAyMDIwNDAxMDkwOTA5MDkwOTBhMDgwODA4MDkwOTAzMDIwMjA0MDgwODA5MDkwOTA5MDEwODA4MDgwOTA5MDMwMjAyMDQwODAxMDkwOTA5MDkwODA4MDEwODA5MDkwNjA1MDUwNzA5MDkwOTA5MDkwOTA4MGEwODBhMDkwOTA5MDkwOTA5MDkwOTA5MDkwOTA5MGEwODA4MDgwOTA5MDkwOTA5MDkwOTA5MDkwOTA5MDkwOTBhMDkwOTA5MDkwOTA5MDkwOTA5MDkwOTA4MDkwOTA5MDkwOTA5MDEwMTA4MDkwOTA5MDkwOTBhMDgwMTA4MDkwOTA5MDEwMTAxMGEwOTA5MDkwOTA5MDgwMTAxMDgwOTA5MDkwOTBhMDgwOTA5MDkwOTA5MDEwODBhMDgwYTA5MDkwOTA5MDkwOTA5MDkwOTA5MDkwYTAxMDEwYTA4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
-        "tileset": [
-            "myTiles.transparency16",
-            "sprites.castle.tileGrass2",
-            "sprites.castle.tilePath5",
-            "sprites.castle.tilePath4",
-            "sprites.castle.tilePath6",
-            "sprites.castle.tilePath8",
-            "sprites.castle.tilePath7",
-            "sprites.castle.tilePath9",
-            "sprites.castle.tileGrass1",
-            "sprites.skillmap.islandTile4",
-            "sprites.castle.tileGrass3"
-        ],
-        "displayName": "Banditt_Level"
-    },
     "Hund_Level1": {
         "id": "Hund_Level1",
         "mimeType": "application/mkcd-tilemap",
@@ -143,6 +124,26 @@
             "sprites.dungeon.darkGroundSouth"
         ],
         "displayName": "shopInterior"
+    },
+    "Banditt_level1": {
+        "id": "Banditt_level1",
+        "mimeType": "application/mkcd-tilemap",
+        "data": "MTAxMDAwMTAwMDA5MDkwOTA5MGIwOTAzMDIwMjA0MDkwOTBhMDEwYTA4MDkwOTA5MDkwYjA5MDMwMjAyMDQwOTA5MDkwMTAxMGEwOTA4MDgwODBiMDkwMzAyMDIwNDA5MDkwOTA4MGEwODBiMGIwYjBiMGIwOTAzMDIwMjA0MDkwOTA5MDkwODBhMDgwMTBhMGEwODA5MDMwMjAyMDQwODA5MDkwOTA4MDgwODA4MDEwODA5MDkwMzAyMDIwNDAxMDkwOTA5MDkwOTBhMDgwODA4MDkwOTAzMDIwMjA0MDgwODA5MDkwOTA5MDEwODA4MDgwOTA5MDMwMjAyMDQwODAxMDkwOTA5MDkwODA4MDEwODA5MDkwNjA1MDUwNzA5MDkwOTA5MDkwOTA4MGEwODBhMDkwOTA5MDkwOTA5MDkwOTA5MDkwOTA5MGEwODA4MDgwOTA5MDkwOTA5MDkwOTA5MDkwOTA5MDkwOTBhMDkwOTA5MDkwOTA5MDkwOTA5MDkwOTA4MDkwOTA5MDkwOTA5MDEwMTA4MDkwOTA5MDkwOTBhMDgwMTA4MDkwOTA5MDEwMTAxMGEwOTA5MDkwOTA5MDgwMTAxMDgwOTA5MDkwOTBhMDgwOTA5MDkwOTA5MDEwODBhMDgwYTA5MDkwOTA5MDkwOTA5MDkwOTA5MDkwYTAxMDEwYTA4MDAwMDAyMDAwMDAwMDAwMDAwMDAwMjAwMDAwMDAwMDAwMDAwMDIwMDAwMDAwMDAwMjIyMjAyMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
+        "tileset": [
+            "myTiles.transparency16",
+            "sprites.castle.tileGrass2",
+            "sprites.castle.tilePath5",
+            "sprites.castle.tilePath4",
+            "sprites.castle.tilePath6",
+            "sprites.castle.tilePath8",
+            "sprites.castle.tilePath7",
+            "sprites.castle.tilePath9",
+            "sprites.castle.tileGrass1",
+            "sprites.skillmap.islandTile4",
+            "sprites.castle.tileGrass3",
+            "sprites.builtin.brick"
+        ],
+        "displayName": "Banditt_Level"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",
