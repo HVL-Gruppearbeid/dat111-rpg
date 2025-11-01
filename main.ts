@@ -86,7 +86,6 @@ Banditt3.setPosition(0, 0)
 let choice = false
 function purchaseYes(): boolean {
     
-    choice = game.ask("Kjøp en potion?", "Strength: 20 Gull")
     return true
 }
 
@@ -138,6 +137,7 @@ function Destroy_Sprites() {
     sprites.destroyAllSpritesOfKind(SpriteKind.Food)
     sprites.destroyAllSpritesOfKind(SpriteKind.npc)
     sprites.destroyAllSpritesOfKind(SpriteKind.exit)
+    sprites.destroyAllSpritesOfKind(SpriteKind.potions)
 }
 
 // ##############
@@ -155,10 +155,10 @@ function butikk_level() {
     // ## Bod i butikken ###
     bodButikk.setPosition(120, 72)
     // ## Potions Posisjon ###
-    strPotion.setPosition(90, 120)
-    intellectPotion.setPosition(110, 120)
-    agilityPotion.setPosition(130, 120)
-    speedPotion.setPosition(150, 120)
+    strPotion.setPosition(90, 100)
+    intellectPotion.setPosition(110, 100)
+    agilityPotion.setPosition(130, 100)
+    speedPotion.setPosition(150, 100)
     // ## Flytter unødvendige sprites off screen
     // Bandits, taco, chest, Shop
     Banditt.setPosition(0, 0)
@@ -294,6 +294,7 @@ function Fighting() {
 //  dvs. det som fungerer som spilløkken som oppdateres kontinuerlig
 //  og sørger for at spillet blir interaktivt.
 game.onUpdate(function on_update() {
+    let choice: boolean;
     let purchasePotion: boolean;
     let teller: number;
     //  Taco-spriten blir "spist" dersom spillerkarakteren sin sprite overlapper den.
@@ -363,17 +364,74 @@ game.onUpdate(function on_update() {
     // ## Spør spiller om de vil kjøpe strength potion ###
     if (strPotion !== null && playerChar.overlapsWith(strPotion)) {
         purchaseYes()
-        if (choice) {
+        choice = game.ask("Kjøp en potion?", "Strength: 20 Gull")
+        if (choice && gold > 20) {
+            gold - 20
             stats["strength"] += 2
-            game.showLongText("You got + 2 Strength", DialogLayout.Bottom)
+            game.showLongText("Du har fått +2 Strength", DialogLayout.Bottom)
+            playerChar.setPosition(90, 120)
         } else {
+            game.showLongText("Du har mindre enn 20 gull", DialogLayout.Bottom)
             purchasePotion = false
-            playerChar.setPosition(120, 150)
+            playerChar.setPosition(90, 120)
         }
         
     }
     
-    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    // ## Spør spiller om de vil kjøpe intellect potion ###
+    if (intellectPotion !== null && playerChar.overlapsWith(intellectPotion)) {
+        purchaseYes()
+        choice = game.ask("Kjøp en potion?", "Intelligens: 20 Gull")
+        if (choice && gold > 20) {
+            gold - 20
+            stats["intellect"] += 2
+            game.showLongText("Du har fått +2 Intelligens", DialogLayout.Bottom)
+            playerChar.setPosition(110, 120)
+        } else {
+            purchasePotion = false
+            playerChar.setPosition(110, 120)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    // ## Spør spiller om de vil kjøpe agility potion ###
+    if (agilityPotion !== null && playerChar.overlapsWith(agilityPotion)) {
+        purchaseYes()
+        choice = game.ask("Kjøp en potion?", "Agility: 20 Gull")
+        if (choice && gold > 20) {
+            gold - 20
+            stats["agility"] += 2
+            game.showLongText("Du har fått +2 Agility", DialogLayout.Bottom)
+            playerChar.setPosition(130, 120)
+        } else {
+            game.showLongText("Du har mindre enn 20 gull", DialogLayout.Bottom)
+            purchasePotion = false
+            playerChar.setPosition(130, 120)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    // ## Spør spiller om de vil kjøpe speed potion ###
+    if (speedPotion !== null && playerChar.overlapsWith(speedPotion)) {
+        purchaseYes()
+        choice = game.ask("Kjøp en potion?", "Speed: 20 Gull")
+        if (choice && gold > 20) {
+            gold - 20
+            stats["speed"] += 2
+            game.showLongText("Du har fått +2 Speed", DialogLayout.Bottom)
+            playerChar.setPosition(150, 120)
+        } else {
+            game.showLongText("Du har mindre enn 20 gull", DialogLayout.Bottom)
+            purchasePotion = false
+            playerChar.setPosition(150, 120)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
     // #Prøver å Gi mulighet for Kjeks
     if (Bro && playerChar.overlapsWith(Bro) && teller == 0) {
         pauseUntil(function VilHaKjeks(): boolean {
