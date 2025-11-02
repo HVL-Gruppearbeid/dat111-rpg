@@ -177,6 +177,39 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, [myTiles.transparency16,sprites.castle.tilePath5,sprites.castle.tilePath2,sprites.castle.tilePath8,sprites.dungeon.floorLight2,myTiles.tile2,sprites.dungeon.floorDark2,sprites.castle.tileGrass1,myTiles.tile4,myTiles.tile5,myTiles.tile6], TileScale.Sixteen);
+            case "Battle_Map":
+            case "Battle_Map1":return tiles.createTilemap(hex`10001e000a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0108080808080808080808020a0a0a0a0709090b09090909090b09030a0a0a0a07090b090909090b0b0b09030a0a0a0a070b090909090b09090b09030a0a0a0a0709090909090909090b09030a0a0a0a0709090909090909090909030a0a0a0a070909090b090909090909030a0a0a0a070b09090b0b0b0b090909030a0a0a0a070b090909090909090909030a0a0a0a070b09090909090b0b0b0b030a0a0a0a070b0b0b0b09090b090909030a0a0a0a070909090909090b090909030a0a0a0a0709090909090909090909030a0a0a0a070b0b0b0b090909090909030a0a0a0a070909090909090b0b0b0b030a0a0a0a070909090909090b09090b030a0a0a0a070b09090909090b09090b030a0a0a0a070b0b0b0b09090b09090b030a0a0a0a0709090b09090909090909030a0a0a0a0709090b09090909090909030a0a0a0a0709090909090909090909030a0a0a0a070909090b0b0b0b090909030a0a0a0a070909090909090909090b030a0a0a0a07090b090909090909090b030a0a0a0a07090b090909090909090b030a0a0a0a07090b0b0b09090b0b0b0b030a0a0a0a0709090909090909090909030a0a0a0a0605050505050505050505040a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a`, img`
+.22222222222222.
+.2............2.
+.2...2.....2..2.
+.2..2....222..2.
+.2.2....2..2..2.
+.2.........2..2.
+.2............2.
+.2....2.......2.
+.2.2..2222....2.
+.2.2..........2.
+.2.2.....2222.2.
+.2.2222..2....2.
+.2.......2....2.
+.2............2.
+.2.2222.......2.
+.2.......2222.2.
+.2.......2..2.2.
+.2.2.....2..2.2.
+.2.2222..2..2.2.
+.2...2........2.
+.2...2........2.
+.2............2.
+.2....2222....2.
+.2..........2.2.
+.2..2.......2.2.
+.2..2.......2.2.
+.2..222..2222.2.
+.2............2.
+.2............2.
+.22222222222222.
+`, [myTiles.transparency16,sprites.dungeon.darkGroundNorthWest0,sprites.dungeon.darkGroundNorthEast0,sprites.dungeon.darkGroundEast,sprites.dungeon.darkGroundSouthEast0,sprites.dungeon.darkGroundSouth,sprites.dungeon.darkGroundSouthWest0,sprites.dungeon.darkGroundWest,sprites.dungeon.darkGroundNorth,sprites.dungeon.darkGroundCenter,sprites.dungeon.hazardLava0,sprites.dungeon.floorLight5], TileScale.Sixteen);
         }
         return null;
     })

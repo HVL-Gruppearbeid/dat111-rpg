@@ -60,10 +60,7 @@ playerChar.setPosition(128, 250)
 scene.cameraFollowSprite(playerChar)
 //  Setter kameraet til å følge etter karakteren sin sprite.
 //  Angir karakteren sin sprite som "bevegelses-sprite", dvs. at standardkontrollene vil nå påvirke spillerens sprite.
-if (fighting_Check == false) {
-    controller.moveSprite(playerChar)
-}
-
+controller.moveSprite(playerChar)
 let Guard = sprites.create(assets.image`GuardS`, SpriteKind.Food)
 let Kjeks = sprites.create(assets.image`Cookie`, SpriteKind.Food)
 // ## Mat ###
@@ -91,6 +88,10 @@ let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
 let Dekker = sprites.create(assets.image`Dekker`, SpriteKind.Food)
 // ## Vil kjøpe potion? ###
 let choice = false
+// ##Fighting###
+let Heavy_Attack = sprites.create(assets.image`Soft_Attack`, SpriteKind.Food)
+let Fast_Attack = sprites.create(assets.image`Hard_Attack`, SpriteKind.Food)
+let Magic_Attack = sprites.create(assets.image`Amazing_Attack`, SpriteKind.Food)
 // ##Teleportører###
 let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
 let BandittEnter = sprites.create(assets.image`Til_Banditt`, SpriteKind.Food)
@@ -141,6 +142,9 @@ function flytte_sprites() {
     Hund_Exit.setPosition(0, 0)
     Guard.setPosition(0, 0)
     Kjeks.setPosition(0, 0)
+    Heavy_Attack.setPosition(0, 0)
+    Fast_Attack.setPosition(0, 0)
+    Magic_Attack.setPosition(0, 0)
     Dekker.setPosition(15, 15)
 }
 
@@ -154,8 +158,35 @@ let exitShop = false
 let Har_du_hund = false
 let Finnbar_hund = false
 let Funnet_hund = false
+let Fight = false
+let Banditt_1 = false
+let Banditt_2 = false
+let Banditt_3 = false
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
+function fighting() {
+    flytte_sprites()
+    tiles.setCurrentTilemap(tilemap`Battle_Map`)
+    Heavy_Attack.setPosition(130, 310)
+    Fast_Attack.setPosition(130, 340)
+    Magic_Attack.setPosition(130, 370)
+    
+    Fight = true
+    info.startCountdown(80)
+}
+
+function Win() {
+    game.showLongText("Fienden ble sliten og gikk sin vei", DialogLayout.Bottom)
+    
+    Fight = false
+    Banditt_Level()
+}
+
+function Loose() {
+    game.showLongText("Du tapte og gikk tilbake for å slappe av", DialogLayout.Bottom)
+    field_level()
+}
+
 // ##############
 //  LEVELS #
 // ##############
@@ -289,50 +320,44 @@ function update_character_animation() {
 }
 
 // # Fighting er uferdig
-function fighting() {
-    
-    fighting_Check = true
-    playerChar.setVelocity(0, 0)
-    tiles.setCurrentTilemap(tilemap`battle_map`)
-    Til_LoreTile.setPosition(0, 0)
-    playerChar.setPosition(20, 130)
-    scaling.scaleToPercent(playerChar, 500, ScaleDirection.Uniformly, ScaleAnchor.Middle)
-    playerChar.setStayInScreen(true)
-    game.showLongText("A wild Bandit appears!", DialogLayout.Bottom)
-    //  Prøvde ein while loop her for å "holde" spillet i combat. Men med den ekstremt awkward number selectoren, så ser du jo ikkje nåke anna.
-    if (current_Bandit == 1) {
-        Banditt2.setPosition(0, 0)
-        Banditt3.setPosition(0, 0)
-        Banditt.setPosition(130, 130)
-        scaling.scaleToPercent(Banditt, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
-        Banditt.setStayInScreen(true)
-    } else if (current_Bandit == 2) {
-        Banditt.setPosition(0, 0)
-        Banditt3.setPosition(0, 0)
-        Banditt2.setPosition(130, 130)
-        scaling.scaleToPercent(Banditt2, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
-        Banditt2.setStayInScreen(true)
-    } else {
-        Banditt.setPosition(0, 0)
-        Banditt2.setPosition(0, 0)
-        Banditt3.setPosition(130, 130)
-        scaling.scaleToPercent(Banditt3, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
-        Banditt3.setStayInScreen(true)
-    }
-    
-    pause(100)
-    let attack_type = game.askForNumber("1 =  Fast attack, 2 =  Heavy attack, 3 = Smart attack")
-    if (attack_type == 1) {
-        attack_type = 1
-    } else if (attack_type == 2) {
-        attack_type = 2
-    } else {
-        attack_type = 3
-    }
-    
-    pause(1000)
-}
-
+// def fighting():
+//     global fighting_Check
+//     fighting_Check = True
+//     playerChar.set_velocity(0, 0)
+//     tiles.set_current_tilemap(tilemap("battle_map"))
+//    Til_LoreTile.set_position(0, 0)
+//   playerChar.set_position(20,130)
+//  scaling.scale_to_percent(playerChar, 500, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+// playerChar.set_stay_in_screen(True)
+//     game.show_long_text("A wild Bandit appears!", DialogLayout.BOTTOM)
+//  Prøvde ein while loop her for å "holde" spillet i combat. Men med den ekstremt awkward number selectoren, så ser du jo ikkje nåke anna.
+//    if (current_Bandit == 1):
+//       Banditt2.set_position(0,0)
+//      Banditt3.set_position(0,0)
+//     Banditt.set_position(130, 130)
+//    scaling.scale_to_percent(Banditt, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+//     Banditt.set_stay_in_screen(True)
+//     elif (current_Bandit == 2):
+//        Banditt.set_position(0,0)
+//       Banditt3.set_position(0,0)
+//      Banditt2.set_position(130, 130)
+//     scaling.scale_to_percent(Banditt2, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+//    Banditt2.set_stay_in_screen(True)
+// else:
+//    Banditt.set_position(0,0)
+//   Banditt2.set_position(0,0)
+//         Banditt3.set_position(130, 130)
+//        scaling.scale_to_percent(Banditt3, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+//       Banditt3.set_stay_in_screen(True)
+//     pause(100)
+//    attack_type = game.ask_for_number("1 =  Fast attack, 2 =  Heavy attack, 3 = Smart attack")
+//   if (attack_type == 1):
+//      attack_type = 1
+//     elif (attack_type == 2):
+//        attack_type = 2
+//   else:
+//      attack_type = 3
+//   pause(1000)
 //  Oppgir at vår on_update-funksjon skal fungere som on_update,
 //  dvs. det som fungerer som spilløkken som oppdateres kontinuerlig
 //  og sørger for at spillet blir interaktivt.
@@ -642,24 +667,100 @@ game.onUpdate(function on_update() {
         playerChar.setPosition(150, 90)
     }
     
-    // ## Fight check ###
-    if (playerChar.overlapsWith(Banditt)) {
-        move_speed = 0
-        current_Bandit = 1
-        fighting_Check = true
-        fighting()
+    // ###Fighting
+    info.onCountdownEnd(function on_countdown_end() {
+        Win()
+        if (Banditt_1 == true) {
+            Banditt.lifespan = 0
+        }
+        
+        if (Banditt_2 == true) {
+            Banditt2.lifespan = 0
+        }
+        
+        if (Banditt_3 == true) {
+            Banditt3.lifespan = 0
+        }
+        
+        let Fight = false
+    })
+    if (playerChar.overlapsWith(Banditt) && Fight == true) {
+        Loose()
+        Banditt_Level()
+        
+        Fight = false
+        Banditt.follow(playerChar, 0)
+        info.stopCountdown()
     }
     
-    if (playerChar.overlapsWith(Banditt2)) {
-        move_speed = 0
-        current_Bandit = 2
-        fighting()
+    if (playerChar.overlapsWith(Banditt2) && Fight == true) {
+        Loose()
+        Banditt_Level()
+        
+        Fight = false
+        Banditt2.follow(playerChar, 0)
+        info.stopCountdown()
     }
     
-    if (playerChar.overlapsWith(Banditt3)) {
-        move_speed = 0
-        current_Bandit = 3
+    if (playerChar.overlapsWith(Banditt3) && Fight == true) {
+        Loose()
+        Banditt_Level()
+        
+        Fight = false
+        Banditt3.follow(playerChar, 0)
+        info.stopCountdown()
+    }
+    
+    if (playerChar.overlapsWith(Banditt) && !Fight) {
+        game.showLongText("Ikke vær nærri Banditten, hvis du klarer å ikke bli fanget gjennom hele countdownen, så har du vunnet. De fargerike knappene er angrep du kan gjøre, å være nærri de vil slite ut banditten og korte ned tiden", DialogLayout.Bottom)
         fighting()
+        
+        Fight = true
+        
+        Banditt_1 = true
+        playerChar.setPosition(100, 350)
+        Banditt.setPosition(200, 350)
+        Banditt.follow(playerChar, 60)
+    }
+    
+    if (playerChar.overlapsWith(Banditt2) && !Fight) {
+        game.showLongText("Ikke vær nærri Banditten, hvis du klarer å ikke bli fanget gjennom hele countdownen, så har du vunnet. De fargerike knappene er angrep du kan gjøre, å være nærri de vil slite ut banditten og korte ned tiden", DialogLayout.Bottom)
+        fighting()
+        playerChar.setPosition(100, 350)
+        Banditt2.setPosition(200, 350)
+        
+        Fight = true
+        
+        Banditt_2 = true
+        Banditt2.setPosition(200, 350)
+        Banditt2.follow(playerChar, 80, 30)
+    }
+    
+    if (playerChar.overlapsWith(Banditt3) && !Fight) {
+        game.showLongText("Ikke vær nærri Banditten, hvis du klarer å ikke bli fanget gjennom hele countdownen, så har du vunnet. De fargerike knappene er angrep du kan gjøre, å være nærri de vil slite ut banditten og korte ned tiden", DialogLayout.Bottom)
+        
+        Banditt_3 = true
+        
+        Fight = true
+        fighting()
+        playerChar.setPosition(100, 350)
+        Banditt3.setPosition(200, 350)
+        Banditt3.follow(playerChar, 70, 50)
+    }
+    
+    if (playerChar.overlapsWith(Heavy_Attack)) {
+        info.changeCountdownBy(-20)
+        Heavy_Attack.lifespan = 0
+    }
+    
+    if (playerChar.overlapsWith(Fast_Attack)) {
+        info.changeCountdownBy(-5)
+        Fast_Attack.lifespan = 0
+    }
+    
+    if (playerChar.overlapsWith(Magic_Attack)) {
+        info.changeCountdownBy(-10)
+        Magic_Attack.lifespan = 0
     }
     
     // ##Litt Story
