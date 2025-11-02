@@ -79,42 +79,31 @@ if (fighting_Check == False):
 ### Mat ###
 # Oppretter sprite for en taco og setter dens posisjon.
 taco = sprites.create(assets.image("taco"), SpriteKind.food)
-taco.set_position(10, 100)
 
 ### Shop ###
 shop = sprites.create(assets.image("house"), SpriteKind.main_level)
 shopExit = sprites.create(assets.image("PlaceHolder_Ingenting"), SpriteKind.exit)
 butikkEier = sprites.create(assets.image("ButikkEier"), SpriteKind.shop_level)
-butikkEier.set_position(0, 0)
 bodButikk = sprites.create(assets.image("bordbutikk"), SpriteKind.shop_level)
-bodButikk.set_position(0, 0)
 
 ### Potions ###
 strPotion = sprites.create(assets.image("strPotion"), SpriteKind.shop_level)
-strPotion.set_position(0, 0)
 
 intellectPotion = sprites.create(assets.image("intPotion"), SpriteKind.shop_level)
-intellectPotion.set_position(0, 0)
 
 agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.shop_level)
-agilityPotion.set_position(0, 0)
     
 speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.shop_level)
-speedPotion.set_position(0, 0)
 
 
 
 ### Bandits ###
 Banditt = sprites.create(assets.image("Banditt"), SpriteKind.npc)
-Banditt.set_position(0, 0)
 Banditt2 = sprites.create(assets.image("Banditt2"), SpriteKind.npc)
-Banditt2.set_position(0, 0)
 Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.npc)
-Banditt3.set_position(0, 0)
 
 #Dekker
 Dekker = sprites.create(assets.image("Dekker"),SpriteKind.food)
-Dekker.set_position(0, 0)
 
 ### Vil kjøpe potion? ###
 choice = False
@@ -125,23 +114,20 @@ def purchaseYes():
 
 ###Teleportører###
 Til_LoreTile = sprites.create(assets.image("Til_Lore"), SpriteKind.food)
-Til_LoreTile.set_position(0, 100)
 
 BandittEnter = sprites.create(assets.image("Til_Banditt"),SpriteKind.food)
 
 BandittExit = sprites.create(assets.image("Til_Banditt"),SpriteKind.exit)
-BandittExit.set_position(0, 0)
 
 Til_Hund = sprites.create(assets.image("Til_Lore"),SpriteKind.food)
-Til_Hund.set_position(0, 0)
 
 Lore_Exit = sprites.create(assets.image("Til_Lore"), SpriteKind.exit)
-Hund_Exit =sprites.create(assets.image("Til_Lore"),SpriteKind.exit)
+
+Hund_Exit = sprites.create(assets.image("Til_Lore"),SpriteKind.exit)
 
 ### Skattekiste ###
 # Oppretter sprite for en skattekiste og setter dens posisjon.
 treasure = sprites.create(assets.image("chestClosed"), SpriteKind.food)
-treasure.set_position(200, 150)
 # Angir at kisten ikke er åpnet enda, slik at vi senere unngå at gull gis mer enn en gang til spilleren.
 treasureNotOpened = True 
 
@@ -181,6 +167,7 @@ def flytte_sprites():
     Til_Hund.set_position(0, 0)
     Lore_Exit.set_position(0, 0)
     Hund.set_position(0, 0)
+    Hund_Exit.set_position(0, 0)
 
     Dekker.set_position(15, 15)
 
@@ -302,6 +289,7 @@ def Hund_Level():
     flytte_sprites()
 
     Hund.set_position(39,200)
+    Hund_Exit.set_position(255,125)
 
 
 
@@ -358,12 +346,38 @@ def on_update():
 
 
     if(playerChar.overlaps_with(Til_LoreTile)):
-        pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
-        if (enterShop):
-            Lore_Level()
-            playerChar.set_position(220, 130)
-        else:
-            playerChar.set_position(40, 90) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+        Lore_Level()
+        playerChar.set_position(220, 130)
+        
+
+    if(playerChar.overlaps_with(Lore_Exit)):
+        field_level()
+        playerChar.set_position(30, 95)
+    
+
+
+    if(playerChar.overlaps_with(BandittEnter)):
+        Banditt_Level()
+        playerChar.set_position(128, 20)
+    
+
+    if(playerChar.overlaps_with(BandittExit)):
+        
+        field_level()
+        playerChar.set_position(128, 228)
+
+
+
+    if(playerChar.overlaps_with(Til_Hund)):
+        Hund_Level()
+        playerChar.set_position(230, 125)
+            
+    if(playerChar.overlaps_with(Hund_Exit)):
+        Lore_Level()
+        playerChar.set_position(100, 180)
+            
+
+
 
 ### Spør spiller om de vil kjøpe strength potion ###
     if(strPotion is not None and playerChar.overlaps_with(strPotion)):
@@ -435,46 +449,6 @@ def on_update():
         else:
             playerChar.set_position(150,90)
         
-
-
-
-    if(playerChar.overlaps_with(BandittEnter)):
-        pause_until(onPauseUntilEnter)
-        if(enterShop):
-            Banditt_Level()
-            playerChar.set_position(128, 20)
-        else:
-            playerChar.set_position(128,228)
-
-
-    if(playerChar.overlaps_with(BandittExit)):
-        pause_until(onPauseUntilExit)
-        if(enterShop):
-            field_level()
-            playerChar.set_position(128, 228)
-
-        else:
-            playerChar.set_position(128,30)
-
-
-    if(playerChar.overlaps_with(Til_Hund)):
-        pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
-        if (exitShop):
-            Hund_Level()
-            playerChar.set_position(250, 140)
-            
-        else:
-            playerChar.set_position(35,135) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
-
-    if(playerChar.overlaps_with(Lore_Exit)):
-        pause_until(onPauseUntilExit) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
-        if (exitShop):
-            field_level()
-            playerChar.set_position(30, 95)
-            
-        else:
-            playerChar.set_position(225,135) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
-
 
     ### Fight check ###
 

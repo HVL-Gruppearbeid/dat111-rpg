@@ -67,33 +67,22 @@ if (fighting_Check == false) {
 // ## Mat ###
 //  Oppretter sprite for en taco og setter dens posisjon.
 let taco = sprites.create(assets.image`taco`, SpriteKind.Food)
-taco.setPosition(10, 100)
 // ## Shop ###
 let shop = sprites.create(assets.image`house`, SpriteKind.main_level)
 let shopExit = sprites.create(assets.image`PlaceHolder_Ingenting`, SpriteKind.exit)
 let butikkEier = sprites.create(assets.image`ButikkEier`, SpriteKind.shop_level)
-butikkEier.setPosition(0, 0)
 let bodButikk = sprites.create(assets.image`bordbutikk`, SpriteKind.shop_level)
-bodButikk.setPosition(0, 0)
 // ## Potions ###
 let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.shop_level)
-strPotion.setPosition(0, 0)
 let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.shop_level)
-intellectPotion.setPosition(0, 0)
 let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.shop_level)
-agilityPotion.setPosition(0, 0)
 let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.shop_level)
-speedPotion.setPosition(0, 0)
 // ## Bandits ###
 let Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
-Banditt.setPosition(0, 0)
 let Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
-Banditt2.setPosition(0, 0)
 let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
-Banditt3.setPosition(0, 0)
 // Dekker
 let Dekker = sprites.create(assets.image`Dekker`, SpriteKind.Food)
-Dekker.setPosition(0, 0)
 // ## Vil kjøpe potion? ###
 let choice = false
 function purchaseYes(): boolean {
@@ -103,18 +92,14 @@ function purchaseYes(): boolean {
 
 // ##Teleportører###
 let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
-Til_LoreTile.setPosition(0, 100)
 let BandittEnter = sprites.create(assets.image`Til_Banditt`, SpriteKind.Food)
 let BandittExit = sprites.create(assets.image`Til_Banditt`, SpriteKind.exit)
-BandittExit.setPosition(0, 0)
 let Til_Hund = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
-Til_Hund.setPosition(0, 0)
 let Lore_Exit = sprites.create(assets.image`Til_Lore`, SpriteKind.exit)
 let Hund_Exit = sprites.create(assets.image`Til_Lore`, SpriteKind.exit)
 // ## Skattekiste ###
 //  Oppretter sprite for en skattekiste og setter dens posisjon.
 let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
-treasure.setPosition(200, 150)
 //  Angir at kisten ikke er åpnet enda, slik at vi senere unngå at gull gis mer enn en gang til spilleren.
 let treasureNotOpened = true
 // ## Musikk ###
@@ -149,6 +134,7 @@ function flytte_sprites() {
     Til_Hund.setPosition(0, 0)
     Lore_Exit.setPosition(0, 0)
     Hund.setPosition(0, 0)
+    Hund_Exit.setPosition(0, 0)
     Dekker.setPosition(15, 15)
 }
 
@@ -162,18 +148,6 @@ let exitShop = false
 let Kjeks = false
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
-function onPauseUntilEnter(): boolean {
-    
-    enterShop = game.ask("Enter?")
-    return true
-}
-
-function onPauseUntilExit(): boolean {
-    
-    exitShop = game.ask("Exit?")
-    return true
-}
-
 // ##############
 //  LEVELS #
 // ##############
@@ -241,6 +215,7 @@ function Hund_Level() {
     tiles.setCurrentTilemap(tilemap`Hund_Level`)
     flytte_sprites()
     Hund.setPosition(39, 200)
+    Hund_Exit.setPosition(255, 125)
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
@@ -379,7 +354,11 @@ game.onUpdate(function on_update() {
     
     //  Dersom spillerens sprite overlapper med butikken vil de kunne gå inn i den.
     if (playerChar.overlapsWith(shop)) {
-        pauseUntil(onPauseUntilEnter)
+        pauseUntil(function onPauseUntilEnter(): boolean {
+            
+            enterShop = game.ask("Enter?")
+            return true
+        })
         //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop) {
             butikk_level()
@@ -391,7 +370,11 @@ game.onUpdate(function on_update() {
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
     if (playerChar.overlapsWith(shopExit)) {
-        pauseUntil(onPauseUntilExit)
+        pauseUntil(function onPauseUntilExit(): boolean {
+            
+            exitShop = game.ask("Exit?")
+            return true
+        })
         //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (exitShop) {
             field_level()
@@ -403,18 +386,35 @@ game.onUpdate(function on_update() {
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
     if (playerChar.overlapsWith(Til_LoreTile)) {
-        pauseUntil(onPauseUntilEnter)
-        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
-        if (enterShop) {
-            Lore_Level()
-            playerChar.setPosition(220, 130)
-        } else {
-            playerChar.setPosition(40, 90)
-        }
-        
+        Lore_Level()
+        playerChar.setPosition(220, 130)
     }
     
-    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (playerChar.overlapsWith(Lore_Exit)) {
+        field_level()
+        playerChar.setPosition(30, 95)
+    }
+    
+    if (playerChar.overlapsWith(BandittEnter)) {
+        Banditt_Level()
+        playerChar.setPosition(128, 20)
+    }
+    
+    if (playerChar.overlapsWith(BandittExit)) {
+        field_level()
+        playerChar.setPosition(128, 228)
+    }
+    
+    if (playerChar.overlapsWith(Til_Hund)) {
+        Hund_Level()
+        playerChar.setPosition(230, 125)
+    }
+    
+    if (playerChar.overlapsWith(Hund_Exit)) {
+        Lore_Level()
+        playerChar.setPosition(100, 180)
+    }
+    
     // ## Spør spiller om de vil kjøpe strength potion ###
     if (strPotion !== null && playerChar.overlapsWith(strPotion)) {
         purchaseYes()
@@ -503,54 +503,6 @@ game.onUpdate(function on_update() {
         
     }
     
-    if (playerChar.overlapsWith(BandittEnter)) {
-        pauseUntil(onPauseUntilEnter)
-        if (enterShop) {
-            Banditt_Level()
-            playerChar.setPosition(128, 20)
-        } else {
-            playerChar.setPosition(128, 228)
-        }
-        
-    }
-    
-    if (playerChar.overlapsWith(BandittExit)) {
-        pauseUntil(onPauseUntilExit)
-        if (enterShop) {
-            field_level()
-            playerChar.setPosition(128, 228)
-        } else {
-            playerChar.setPosition(128, 30)
-        }
-        
-    }
-    
-    if (playerChar.overlapsWith(Til_Hund)) {
-        pauseUntil(onPauseUntilEnter)
-        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
-        if (exitShop) {
-            Hund_Level()
-            playerChar.setPosition(250, 140)
-        } else {
-            playerChar.setPosition(35, 135)
-        }
-        
-    }
-    
-    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
-    if (playerChar.overlapsWith(Lore_Exit)) {
-        pauseUntil(onPauseUntilExit)
-        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
-        if (exitShop) {
-            field_level()
-            playerChar.setPosition(30, 95)
-        } else {
-            playerChar.setPosition(225, 135)
-        }
-        
-    }
-    
-    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
     // ## Fight check ###
     if (playerChar.overlapsWith(Banditt)) {
         move_speed = 0
