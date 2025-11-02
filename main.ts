@@ -12,6 +12,7 @@ namespace SpriteKind {
 
 let move_speed = 200
 let current_Bandit = 0
+let fighting_Check = false
 //  Oversikt over utstyret som finnes i spillet.
 //  Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
 let equipmentDatabase = {
@@ -59,7 +60,10 @@ playerChar.setPosition(128, 250)
 scene.cameraFollowSprite(playerChar)
 //  Setter kameraet til å følge etter karakteren sin sprite.
 //  Angir karakteren sin sprite som "bevegelses-sprite", dvs. at standardkontrollene vil nå påvirke spillerens sprite.
-controller.moveSprite(playerChar)
+if (fighting_Check == false) {
+    controller.moveSprite(playerChar)
+}
+
 // ## Mat ###
 //  Oppretter sprite for en taco og setter dens posisjon.
 let taco = sprites.create(assets.image`taco`, SpriteKind.Food)
@@ -239,7 +243,7 @@ function Lore_Level() {
 function update_character_animation() {
     
     //  Variabel som hjelper oss til å unngå å overskrive pågående animasjoner.
-    //  Akriverer venstrestilt animasjon dersom venstre tast er trykket.
+    //  Aktiverer venstrestilt animasjon dersom venstre tast er trykket.
     if (controller.left.isPressed()) {
         if (current_animation != "walk_left") {
             //  Unngår å overskrive pågående animasjon
@@ -283,32 +287,47 @@ function update_character_animation() {
     
 }
 
-//  Skal bli Fighting
 function fighting() {
-    let move_speed = 0
+    
+    fighting_Check = true
+    playerChar.setVelocity(0, 0)
     tiles.setCurrentTilemap(tilemap`battle_map`)
     Til_LoreTile.setPosition(0, 0)
     playerChar.setPosition(20, 130)
     scaling.scaleToPercent(playerChar, 500, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    playerChar.setStayInScreen(true)
     game.showLongText("A wild Bandit appears!", DialogLayout.Bottom)
     if (current_Bandit == 1) {
         Banditt2.setPosition(0, 0)
         Banditt3.setPosition(0, 0)
         Banditt.setPosition(130, 130)
         scaling.scaleToPercent(Banditt, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+        Banditt.setStayInScreen(true)
     } else if (current_Bandit == 2) {
         Banditt.setPosition(0, 0)
         Banditt3.setPosition(0, 0)
         Banditt2.setPosition(130, 130)
         scaling.scaleToPercent(Banditt2, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+        Banditt2.setStayInScreen(true)
     } else {
         Banditt.setPosition(0, 0)
         Banditt2.setPosition(0, 0)
         Banditt3.setPosition(130, 130)
         scaling.scaleToPercent(Banditt3, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+        Banditt3.setStayInScreen(true)
     }
     
-    story.showPlayerChoices("Fast attack", "Heavy attack", "smart attack")
+    pause(100)
+    let attack_type = game.askForNumber("1 =  Fast attack, 2 =  Heavy attack, 3 = Smart attack")
+    if (attack_type == 1) {
+        attack_type = 1
+    } else if (attack_type == 2) {
+        attack_type = 1
+    } else {
+        attack_type = 1
+    }
+    
+    pause(1000)
 }
 
 //  Oppgir at vår on_update-funksjon skal fungere som on_update,
@@ -328,6 +347,7 @@ game.onUpdate(function on_update() {
     //  Sørger for at vi bruker de globale verdiene til disse variablene
     //  (som vi definerte tidligere), ellers ville det blitt opprettet lokale
     //  variabler med samme navn når vi endrer verdi på de.
+    
     
     
     
@@ -498,6 +518,7 @@ game.onUpdate(function on_update() {
     if (playerChar.overlapsWith(Banditt)) {
         move_speed = 0
         current_Bandit = 1
+        fighting_Check = true
         fighting()
     }
     

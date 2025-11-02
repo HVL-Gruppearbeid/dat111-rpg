@@ -3,8 +3,8 @@
     "description": "",
     "dependencies": {
         "device": "*",
-        "arcade-story": "github:microsoft/arcade-storytelling#v1.0.3",
-        "sprite-scaling": "*"
+        "sprite-scaling": "*",
+        "controller": "*"
     },
     "files": [
         "main.ts",

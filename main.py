@@ -14,6 +14,7 @@ class SpriteKind:
 
 move_speed = 200
 current_Bandit = 0
+fighting_Check = False
 
     
 # Oversikt over utstyret som finnes i spillet.
@@ -70,7 +71,10 @@ playerChar = sprites.create(assets.image("heroIdleFront"), SpriteKind.player)
 playerChar.set_position(128, 250) # Setter posisjonen til karakteren til å være nederst i midten av brettet
 scene.camera_follow_sprite(playerChar) # Setter kameraet til å følge etter karakteren sin sprite.
 # Angir karakteren sin sprite som "bevegelses-sprite", dvs. at standardkontrollene vil nå påvirke spillerens sprite.
-controller.move_sprite(playerChar)
+
+if (fighting_Check == False):
+    controller.move_sprite(playerChar)
+
 
 ### Mat ###
 # Oppretter sprite for en taco og setter dens posisjon.
@@ -297,6 +301,7 @@ def on_update():
     global gold
     global move_speed
     global current_Bandit
+    global fighting_Check
     
 
     # En skattekiste blir åpnet dersom spillerens sprite overlapper og kisten ikke har vært åpnet før.
@@ -431,6 +436,7 @@ def on_update():
     if(playerChar.overlaps_with(Banditt)):
         move_speed = 0
         current_Bandit = 1
+        fighting_Check = True
         fighting()
     
     if(playerChar.overlaps_with(Banditt2)):
@@ -464,8 +470,8 @@ def on_update():
 def update_character_animation():
     global current_animation # Variabel som hjelper oss til å unngå å overskrive pågående animasjoner.
     
-
-    # Akriverer venstrestilt animasjon dersom venstre tast er trykket.
+    
+    # Aktiverer venstrestilt animasjon dersom venstre tast er trykket.
     if(controller.left.is_pressed()):
 
         if(current_animation != "walk_left"): # Unngår å overskrive pågående animasjon
@@ -479,34 +485,38 @@ def update_character_animation():
         
 
     if(controller.right.is_pressed()):
-         if(current_animation != "walk_right"): # Unngår å overskrive pågående animasjon
-              # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-                 animation.run_image_animation(playerChar,
-                 assets.animation("heroWalkRight"), move_speed, True)
-                 current_animation = "walk_right"
+        if(current_animation != "walk_right"): # Unngår å overskrive pågående animasjon
+            # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
+                animation.run_image_animation(playerChar,
+                assets.animation("heroWalkRight"), move_speed, True)
+                current_animation = "walk_right"
 
     if(controller.down.is_pressed()):
-         if(current_animation != "walk_down"): # Unngår å overskrive pågående animasjon
-              # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-                 animation.run_image_animation(playerChar,
-                 assets.animation("heroWalkDown"), move_speed, True)
-                 current_animation = "walk_down"
+        if(current_animation != "walk_down"): # Unngår å overskrive pågående animasjon
+            # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
+                animation.run_image_animation(playerChar,
+                assets.animation("heroWalkDown"), move_speed, True)
+                current_animation = "walk_down"
 
     if(controller.up.is_pressed()):
             if(current_animation != "walk_up"): # Unngår å overskrive pågående animasjon
-                 # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-                 animation.run_image_animation(playerChar,
+                # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
+                animation.run_image_animation(playerChar,
                 assets.animation("heroWalkUp"), move_speed, True)
-                 current_animation = "walk_up"
+                current_animation = "walk_up"
 
-# Skal bli Fighting
+
 def fighting():
 
-    move_speed = 0
+    global fighting_Check
+    fighting_Check = True
+    playerChar.set_velocity(0, 0)
+
     tiles.set_current_tilemap(tilemap("battle_map"))
     Til_LoreTile.set_position(0, 0)
     playerChar.set_position(20,130)
     scaling.scale_to_percent(playerChar, 500, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+    playerChar.set_stay_in_screen(True)
     game.show_long_text("A wild Bandit appears!", DialogLayout.BOTTOM)
 
 
@@ -515,22 +525,37 @@ def fighting():
         Banditt3.set_position(0,0)
         Banditt.set_position(130, 130)
         scaling.scale_to_percent(Banditt, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+        Banditt.set_stay_in_screen(True)
         
-
     elif (current_Bandit == 2):
         Banditt.set_position(0,0)
         Banditt3.set_position(0,0)
         Banditt2.set_position(130, 130)
         scaling.scale_to_percent(Banditt2, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+        Banditt2.set_stay_in_screen(True)
+
     else:
         Banditt.set_position(0,0)
         Banditt2.set_position(0,0)
         Banditt3.set_position(130, 130)
         scaling.scale_to_percent(Banditt3, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
-    
-    story.show_player_choices("Fast attack", "Heavy attack", "smart attack")
-    
-    
+        Banditt3.set_stay_in_screen(True)
+
+    pause(100)
+    attack_type = game.ask_for_number("1 =  Fast attack, 2 =  Heavy attack, 3 = Smart attack")
+    if (attack_type == 1):
+        attack_type = 1
+        
+        
+    elif (attack_type == 2):
+        attack_type = 1
+    else:
+        attack_type = 1
+
+
+    pause(1000)
+
+
     
 
 
