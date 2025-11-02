@@ -288,6 +288,7 @@ function update_character_animation() {
     
 }
 
+// # Fighting er uferdig
 function fighting() {
     
     fighting_Check = true
@@ -324,9 +325,9 @@ function fighting() {
     if (attack_type == 1) {
         attack_type = 1
     } else if (attack_type == 2) {
-        attack_type = 1
+        attack_type = 2
     } else {
-        attack_type = 1
+        attack_type = 3
     }
     
     pause(1000)

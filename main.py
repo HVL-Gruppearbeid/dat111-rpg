@@ -634,6 +634,8 @@ def update_character_animation():
                 current_animation = "walk_up"
 
 
+## Fighting er uferdig
+
 def fighting():
 
     global fighting_Check
@@ -676,9 +678,9 @@ def fighting():
         
         
     elif (attack_type == 2):
-        attack_type = 1
+        attack_type = 2
     else:
-        attack_type = 1
+        attack_type = 3
 
 
     pause(1000)
