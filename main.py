@@ -75,6 +75,9 @@ scene.camera_follow_sprite(playerChar) # Setter kameraet til å følge etter kar
 if (fighting_Check == False):
     controller.move_sprite(playerChar)
 
+Guard = sprites.create(assets.image("GuardS"), SpriteKind.food) 
+
+Kjeks = sprites.create(assets.image("Cookie"), SpriteKind.food)
 
 ### Mat ###
 # Oppretter sprite for en taco og setter dens posisjon.
@@ -173,6 +176,8 @@ def flytte_sprites():
     Lore_Exit.set_position(0, 0)
     Hund.set_position(0, 0)
     Hund_Exit.set_position(0, 0)
+    Guard.set_position(0, 0)
+    Kjeks.set_position(0, 0)
 
     Dekker.set_position(15, 15)
 
@@ -188,6 +193,8 @@ enterShop = False
 exitShop = False
 Har_du_hund = False
 Finnbar_hund = False
+Funnet_hund = False
+
 
 # Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 # Manglet implementasjon i Python for MakeCode Arcade.
@@ -227,6 +234,7 @@ def field_level():
     taco.set_position(30, 100)
     Til_LoreTile.set_position(2,100)
     treasure.set_position(200, 150)
+    Guard.set_position(250, 110)
 
 
 
@@ -288,6 +296,13 @@ def Lore_Level():
     shop.set_position(0, 0)
     if(Har_du_hund):
         Hund.set_position(30, 140)
+    
+    if(Funnet_hund):
+        Kjeks.set_position(210, 45)
+
+
+
+    
 
 def Hund_Level():
     tiles.set_current_tilemap(tilemap("Hund_Level"))
@@ -496,14 +511,14 @@ def on_update():
 
     ##Hund quest
 
-    if(playerChar.overlaps_with(Bro) and not Finnbar_hund and not Har_du_hund):
+    if(playerChar.overlaps_with(Bro) and not Finnbar_hund and not Har_du_hund and not Funnet_hund):
         game.show_long_text("Har du sett hunden min? Hvis du ser den, ta den me tilbake så får du får 50 gull", DialogLayout.BOTTOM)
         global Finnbar_hund
         Finnbar_hund = True
         playerChar.set_position(150, 90)
 
 
-    if(playerChar.overlaps_with(Hund) and Finnbar_hund):
+    if(playerChar.overlaps_with(Hund) and Finnbar_hund and not Funnet_hund):
         game.show_long_text("Woof", DialogLayout.BOTTOM)    
         Hund.follow(playerChar, 70)
         playerChar.set_position(100, 200)
@@ -511,6 +526,14 @@ def on_update():
         global Har_du_hund
         Finnbar_hund = False
         Har_du_hund = True
+    
+    if(playerChar.overlaps_with(Hund) and not Finnbar_hund and not Har_du_hund and not Funnet_hund):
+        game.show_long_text("Wooof",DialogLayout.BOTTOM)
+        playerChar.set_position(70,200)
+
+    if(playerChar.overlaps_with(Hund) and not Finnbar_hund and not Har_du_hund and Funnet_hund):
+        game.show_long_text("Wooof",DialogLayout.BOTTOM)
+        playerChar.set_position(150,90)
 
     if(playerChar.overlaps_with(Bro) and Har_du_hund == True):
         game.show_long_text("Du fant hunden min! Tusen takk, her har du 50 gull", DialogLayout.BOTTOM)
@@ -519,8 +542,19 @@ def on_update():
         playerChar.set_position(150, 90)
         Hund.follow(playerChar,0)
         Hund.set_position(135,70)
+        Har_du_hund = False
+        global Funnet_hund
+        Funnet_hund = True
     
-    
+    if(playerChar.overlaps_with(Bro) and Funnet_hund == True):
+        choice = game.ask("Vil du kjøpe en kjeks for 1 gull?")
+        if(choice):
+            if(gold>= 1):
+                game.show_long_text("Du fikk en Kjeks", DialogLayout.BOTTOM)
+                gold = gold - 1
+            else:
+                game.show_long_text("Du har ikke nokk gull", DialogLayout.BOTTOM)
+        playerChar.set_position(150, 90)
     
         
 
@@ -542,20 +576,21 @@ def on_update():
         current_Bandit = 3
         fighting()
     
-
+   ###Litt Story
+    if(playerChar.overlaps_with(Guard)):
+        choice = game.ask("Trenger du hjelp?")
+        if(choice):
+            game.show_long_text("Her i vår verden er det 3 ting en kan gjøre.", DialogLayout.BOTTOM)
+            game.show_long_text("Du kan gå i butikken for å kjøpe oppgraderinger og utstyr. Hvis du er nokk oppgradert så kan du kanskje ta hånd om bandittene som har plaget byen.", DialogLayout.BOTTOM)
+            game.show_long_text("Vanligvis kan en få kjøpt kjeks av boden, men eieren har mistet hunden sin og klarer ikke lage kjeks lenger", DialogLayout.BOTTOM)
+        else: 
+            game.show_long_text("Kom tilbake om du står fast", DialogLayout.BOTTOM)
+        playerChar.set_position(230, 110)
 
 # Oppdaterer karakterens animasjon
     update_character_animation()
         
 
-
-                
-
-#def venstre_slipp():
- #   animation.run_image_animation(playerChar,
-  #      assets.animation("Hero_StandStill_Left"),
-   #     0)
-    
 
 
 

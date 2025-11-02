@@ -64,6 +64,8 @@ if (fighting_Check == false) {
     controller.moveSprite(playerChar)
 }
 
+let Guard = sprites.create(assets.image`GuardS`, SpriteKind.Food)
+let Kjeks = sprites.create(assets.image`Cookie`, SpriteKind.Food)
 // ## Mat ###
 //  Oppretter sprite for en taco og setter dens posisjon.
 let taco = sprites.create(assets.image`taco`, SpriteKind.Food)
@@ -137,6 +139,8 @@ function flytte_sprites() {
     Lore_Exit.setPosition(0, 0)
     Hund.setPosition(0, 0)
     Hund_Exit.setPosition(0, 0)
+    Guard.setPosition(0, 0)
+    Kjeks.setPosition(0, 0)
     Dekker.setPosition(15, 15)
 }
 
@@ -149,6 +153,7 @@ let enterShop = false
 let exitShop = false
 let Har_du_hund = false
 let Finnbar_hund = false
+let Funnet_hund = false
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
 // ##############
@@ -169,6 +174,7 @@ function field_level() {
     taco.setPosition(30, 100)
     Til_LoreTile.setPosition(2, 100)
     treasure.setPosition(200, 150)
+    Guard.setPosition(250, 110)
 }
 
 function butikk_level() {
@@ -220,6 +226,10 @@ function Lore_Level() {
         Hund.setPosition(30, 140)
     }
     
+    if (Funnet_hund) {
+        Kjeks.setPosition(210, 45)
+    }
+    
 }
 
 function Hund_Level() {
@@ -230,10 +240,6 @@ function Hund_Level() {
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
-// def venstre_slipp():
-//    animation.run_image_animation(playerChar,
-//       assets.animation("Hero_StandStill_Left"),
-//      0)
 //  Funksjon som sørger for at animasjonene passer med bevegelsen som foregår.
 function update_character_animation() {
     
@@ -582,20 +588,30 @@ game.onUpdate(function on_update() {
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
     // #Hund quest
-    if (playerChar.overlapsWith(Bro) && !Finnbar_hund && !Har_du_hund) {
+    if (playerChar.overlapsWith(Bro) && !Finnbar_hund && !Har_du_hund && !Funnet_hund) {
         game.showLongText("Har du sett hunden min? Hvis du ser den, ta den me tilbake så får du får 50 gull", DialogLayout.Bottom)
         
         Finnbar_hund = true
         playerChar.setPosition(150, 90)
     }
     
-    if (playerChar.overlapsWith(Hund) && Finnbar_hund) {
+    if (playerChar.overlapsWith(Hund) && Finnbar_hund && !Funnet_hund) {
         game.showLongText("Woof", DialogLayout.Bottom)
         Hund.follow(playerChar, 70)
         playerChar.setPosition(100, 200)
         
         Finnbar_hund = false
         Har_du_hund = true
+    }
+    
+    if (playerChar.overlapsWith(Hund) && !Finnbar_hund && !Har_du_hund && !Funnet_hund) {
+        game.showLongText("Wooof", DialogLayout.Bottom)
+        playerChar.setPosition(70, 200)
+    }
+    
+    if (playerChar.overlapsWith(Hund) && !Finnbar_hund && !Har_du_hund && Funnet_hund) {
+        game.showLongText("Wooof", DialogLayout.Bottom)
+        playerChar.setPosition(150, 90)
     }
     
     if (playerChar.overlapsWith(Bro) && Har_du_hund == true) {
@@ -605,6 +621,24 @@ game.onUpdate(function on_update() {
         playerChar.setPosition(150, 90)
         Hund.follow(playerChar, 0)
         Hund.setPosition(135, 70)
+        Har_du_hund = false
+        
+        Funnet_hund = true
+    }
+    
+    if (playerChar.overlapsWith(Bro) && Funnet_hund == true) {
+        choice = game.ask("Vil du kjøpe en kjeks for 1 gull?")
+        if (choice) {
+            if (gold >= 1) {
+                game.showLongText("Du fikk en Kjeks", DialogLayout.Bottom)
+                gold = gold - 1
+            } else {
+                game.showLongText("Du har ikke nokk gull", DialogLayout.Bottom)
+            }
+            
+        }
+        
+        playerChar.setPosition(150, 90)
     }
     
     // ## Fight check ###
@@ -625,6 +659,20 @@ game.onUpdate(function on_update() {
         move_speed = 0
         current_Bandit = 3
         fighting()
+    }
+    
+    // ##Litt Story
+    if (playerChar.overlapsWith(Guard)) {
+        choice = game.ask("Trenger du hjelp?")
+        if (choice) {
+            game.showLongText("Her i vår verden er det 3 ting en kan gjøre.", DialogLayout.Bottom)
+            game.showLongText("Du kan gå i butikken for å kjøpe oppgraderinger og utstyr. Hvis du er nokk oppgradert så kan du kanskje ta hånd om bandittene som har plaget byen.", DialogLayout.Bottom)
+            game.showLongText("Vanligvis kan en få kjøpt kjeks av boden, men eieren har mistet hunden sin og klarer ikke lage kjeks lenger", DialogLayout.Bottom)
+        } else {
+            game.showLongText("Kom tilbake om du står fast", DialogLayout.Bottom)
+        }
+        
+        playerChar.setPosition(230, 110)
     }
     
     //  Oppdaterer karakterens animasjon
