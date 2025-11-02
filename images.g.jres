@@ -189,6 +189,21 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "Til_Lore"
     },
+    "image39": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAACwDAAAu7u7u7sMALAREREREcsPALu7u7u7DAAAAAAAALAMAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "Sword"
+    },
+    "image41": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAMAMAAAAAAAA//8AAAAAAP8P8P8AAADw/wAA/w8AAPAAAAAADwAA/wAAAAD/AAAMAAAAAMAAAMwLAACwzAAAGxERERGxAAAAAAAAAAAAAAAAAAAAAAAAAQAAAADMABCx/P///wwAAAEAAAAAzAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "BowAndArrow"
+    },
+    "image40": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsLu7CwAAAAAbERGxCwAAABtmZhGxCwAAG4aIFhGxCwAbhoiIERGxABuGiIgREbEAG4aIFhGxCwAbZmYRsQsAABsREbELAAAAsLu7CwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "Sheild"
+    },
     "anim2": {
         "namespace": "myAnimations",
         "id": "anim2",

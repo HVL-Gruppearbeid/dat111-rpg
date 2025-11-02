@@ -77,6 +77,10 @@ let strPotion = sprites.create(assets.image`strPotion`, SpriteKind.shop_level)
 let intellectPotion = sprites.create(assets.image`intPotion`, SpriteKind.shop_level)
 let agilityPotion = sprites.create(assets.image`aglPotion`, SpriteKind.shop_level)
 let speedPotion = sprites.create(assets.image`spdPotion`, SpriteKind.shop_level)
+// ##Utstyr###
+let Bow = sprites.create(assets.image`BowAndArrow`, SpriteKind.Food)
+let Sheild = sprites.create(assets.image`Sheild`, SpriteKind.Food)
+let Sword = sprites.create(assets.image`Sword`, SpriteKind.Food)
 // ## Bandits ###
 let Banditt = sprites.create(assets.image`Banditt`, SpriteKind.npc)
 let Banditt2 = sprites.create(assets.image`Banditt2`, SpriteKind.npc)
@@ -85,10 +89,6 @@ let Banditt3 = sprites.create(assets.image`Banditt3`, SpriteKind.npc)
 let Dekker = sprites.create(assets.image`Dekker`, SpriteKind.Food)
 // ## Vil kjøpe potion? ###
 let choice = false
-function purchaseYes() {
-    
-}
-
 // ##Teleportører###
 let Til_LoreTile = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
 let BandittEnter = sprites.create(assets.image`Til_Banditt`, SpriteKind.Food)
@@ -119,6 +119,9 @@ function flytte_sprites() {
     shopExit.setPosition(0, 0)
     butikkEier.setPosition(0, 0)
     bodButikk.setPosition(0, 0)
+    Bow.setPosition(0, 0)
+    Sheild.setPosition(0, 0)
+    Sword.setPosition(0, 0)
     strPotion.setPosition(0, 0)
     intellectPotion.setPosition(0, 0)
     agilityPotion.setPosition(0, 0)
@@ -184,6 +187,10 @@ function butikk_level() {
     intellectPotion.setPosition(110, 100)
     agilityPotion.setPosition(130, 100)
     speedPotion.setPosition(150, 100)
+    //  Utstyrs Posisjon #
+    Bow.setPosition(160, 120)
+    Sheild.setPosition(75, 135)
+    Sword.setPosition(160, 150)
 }
 
 function Banditt_Level() {
@@ -379,7 +386,7 @@ game.onUpdate(function on_update() {
             field_level()
             playerChar.setPosition(128, 70)
         } else {
-            playerChar.setPosition(128, 70)
+            playerChar.setPosition(125, 160)
         }
         
     }
@@ -509,6 +516,61 @@ game.onUpdate(function on_update() {
         } else {
             purchasePotion = false
             playerChar.setPosition(150, 120)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    // #########
+    // #Utstyr##
+    // #########
+    if (Sword !== null && playerChar.overlapsWith(Sword)) {
+        choice = game.ask("Kjøp et Sverd?", "Sverd: 50 Gull")
+        if (choice) {
+            if (gold >= 50) {
+                gold = gold - 50
+                inventory.push("Sword")
+                game.showLongText("Du har fått Sverd", DialogLayout.Bottom)
+            } else {
+                game.showLongText("Du har mindre enn 50 gull", DialogLayout.Bottom)
+            }
+            
+        }
+        
+        playerChar.setPosition(145, 150)
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (Sheild !== null && playerChar.overlapsWith(Sheild)) {
+        choice = game.ask("Kjøp et Skjold?", "Skjold: 30 Gull")
+        if (choice) {
+            if (gold >= 30) {
+                gold = gold - 30
+                inventory.push("Sheild")
+                game.showLongText("Du har fått Skjold", DialogLayout.Bottom)
+            } else {
+                game.showLongText("Du har mindre enn 30 gull", DialogLayout.Bottom)
+            }
+            
+        }
+        
+        playerChar.setPosition(90, 135)
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (Bow !== null && playerChar.overlapsWith(Bow)) {
+        choice = game.ask("Kjøp en Bue?", "Bue: 25 Gull")
+        if (choice) {
+            if (gold >= 25) {
+                gold = gold - 25
+                inventory.push("Bow")
+                game.showLongText("Du har fått Bue", DialogLayout.Bottom)
+            } else {
+                game.showLongText("Du har mindre enn 25 gull", DialogLayout.Bottom)
+            }
+            
+        } else {
+            playerChar.setPosition(145, 120)
         }
         
     }

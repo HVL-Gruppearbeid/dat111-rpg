@@ -95,7 +95,10 @@ agilityPotion = sprites.create(assets.image("aglPotion"), SpriteKind.shop_level)
     
 speedPotion = sprites.create(assets.image("spdPotion"), SpriteKind.shop_level)
 
-
+###Utstyr###
+Bow = sprites.create(assets.image("BowAndArrow"), SpriteKind.food)
+Sheild = sprites.create(assets.image("Sheild"), SpriteKind.food)
+Sword = sprites.create(assets.image("Sword"), SpriteKind.food)
 
 ### Bandits ###
 Banditt = sprites.create(assets.image("Banditt"), SpriteKind.npc)
@@ -108,8 +111,7 @@ Dekker = sprites.create(assets.image("Dekker"),SpriteKind.food)
 ### Vil kjøpe potion? ###
 choice = False
 
-def purchaseYes():
-    global choice
+
     
 
 ###Teleportører###
@@ -153,6 +155,9 @@ def flytte_sprites():
     shopExit.set_position(0,0)
     butikkEier.set_position(0,0)
     bodButikk.set_position(0,0)
+    Bow.set_position(0, 0)
+    Sheild.set_position(0, 0)
+    Sword.set_position(0, 0)
     strPotion.set_position(0, 0)
     intellectPotion.set_position(0, 0)
     agilityPotion.set_position(0, 0)
@@ -250,8 +255,10 @@ def butikk_level():
     agilityPotion.set_position(130, 100)
     speedPotion.set_position(150, 100)
 
-
-
+    # Utstyrs Posisjon #
+    Bow.set_position(160, 120)
+    Sheild.set_position(75, 135)
+    Sword.set_position(160, 150)
 
 def Banditt_Level():
     global Banditt, Banditt2, Banditt3, BandittExit
@@ -341,7 +348,7 @@ def on_update():
             field_level()
             playerChar.set_position(128, 70)
         else:
-            playerChar.set_position(128,70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+            playerChar.set_position(125,160) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
         ##Lore_Level##
     if(playerChar.overlaps_with(Til_LoreTile)):
         Lore_Level()
@@ -446,6 +453,46 @@ def on_update():
                 
                 purchasePotion = False
                 playerChar.set_position(150,120) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+        ##########
+        ##Utstyr##
+        ##########
+
+    if(Sword is not None and playerChar.overlaps_with(Sword)):
+        choice = game.ask("Kjøp et Sverd?", "Sverd: 50 Gull")
+        if(choice):
+            if(gold >= 50):
+                gold = gold - 50
+                inventory.append("Sword")       
+                game.show_long_text("Du har fått Sverd", DialogLayout.BOTTOM)
+            else:
+                game.show_long_text("Du har mindre enn 50 gull", DialogLayout.BOTTOM)
+        playerChar.set_position(145,150) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+    if(Sheild is not None and playerChar.overlaps_with(Sheild)):
+        choice = game.ask("Kjøp et Skjold?", "Skjold: 30 Gull")
+        if(choice):
+            if(gold >= 30):
+                gold = gold - 30
+                inventory.append("Sheild")
+                game.show_long_text("Du har fått Skjold", DialogLayout.BOTTOM)
+            else:
+                game.show_long_text("Du har mindre enn 30 gull", DialogLayout.BOTTOM)
+        playerChar.set_position(90,135) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+    if(Bow is not None and playerChar.overlaps_with(Bow)):
+        choice = game.ask("Kjøp en Bue?", "Bue: 25 Gull")
+        if(choice):
+            if(gold >= 25):
+                gold = gold - 25
+                inventory.append("Bow")
+                game.show_long_text("Du har fått Bue", DialogLayout.BOTTOM)
+            else:
+                game.show_long_text("Du har mindre enn 25 gull", DialogLayout.BOTTOM)
+        else:      
+            playerChar.set_position(145,120) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+
 
 
 
