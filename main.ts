@@ -107,6 +107,10 @@ Til_LoreTile.setPosition(0, 100)
 let BandittEnter = sprites.create(assets.image`Til_Banditt`, SpriteKind.Food)
 let BandittExit = sprites.create(assets.image`Til_Banditt`, SpriteKind.exit)
 BandittExit.setPosition(0, 0)
+let Til_Hund = sprites.create(assets.image`Til_Lore`, SpriteKind.Food)
+Til_Hund.setPosition(0, 0)
+let Lore_Exit = sprites.create(assets.image`Til_Lore`, SpriteKind.exit)
+let Hund_Exit = sprites.create(assets.image`Til_Lore`, SpriteKind.exit)
 // ## Skattekiste ###
 //  Oppretter sprite for en skattekiste og setter dens posisjon.
 let treasure = sprites.create(assets.image`chestClosed`, SpriteKind.Food)
@@ -117,10 +121,16 @@ let treasureNotOpened = true
 //  Starter bakgrunnsmusikk som er et lydspor lagret i Assets.
 //  Setter PlaybackMode til en verdi som gjør at sporet spilles kontinuerlig i bakgrunnen.
 music.play(music.createSong(assets.song`backgroundSong`), music.PlaybackMode.LoopingInBackground)
+// Hund#
+let Hund = sprites.create(assets.image`Hund_Front`, SpriteKind.Food)
+let bod = sprites.create(assets.image`Bod`, SpriteKind.Food)
+let Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
 // Lager en funksjon for å flytte alle sprites på en gang, for å 
 // korte ned koden
 function flytte_sprites() {
     taco.setPosition(0, 0)
+    Bro.setPosition(0, 0)
+    bod.setPosition(0, 0)
     shop.setPosition(0, 0)
     shopExit.setPosition(0, 0)
     butikkEier.setPosition(0, 0)
@@ -136,7 +146,10 @@ function flytte_sprites() {
     BandittEnter.setPosition(0, 0)
     BandittExit.setPosition(0, 0)
     treasure.setPosition(0, 0)
-    Dekker.setPosition(0, 0)
+    Til_Hund.setPosition(0, 0)
+    Lore_Exit.setPosition(0, 0)
+    Hund.setPosition(0, 0)
+    Dekker.setPosition(15, 15)
 }
 
 field_level()
@@ -147,8 +160,6 @@ field_level()
 let enterShop = false
 let exitShop = false
 let Kjeks = false
-let Bro : Sprite = null
-let bod : Sprite = null
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
 function onPauseUntilEnter(): boolean {
@@ -161,13 +172,6 @@ function onPauseUntilExit(): boolean {
     
     exitShop = game.ask("Exit?")
     return true
-}
-
-function Destroy_Sprites() {
-    sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-    sprites.destroyAllSpritesOfKind(SpriteKind.npc)
-    sprites.destroyAllSpritesOfKind(SpriteKind.exit)
-    sprites.destroyAllSpritesOfKind(SpriteKind.potions)
 }
 
 // ##############
@@ -190,16 +194,6 @@ function field_level() {
     treasure.setPosition(200, 150)
 }
 
-// Flytter på unødvendige Destroy_Sprites
-//  butikkEier.set_position(0, 0)
-// bodButikk.set_position(0, 0)
-//  strPotion.set_position(0, 0)
-// intellectPotion.set_position(0, 0)
-// agilityPotion.set_position(0, 0)
-// speedPotion.set_position(0, 0)
-// Banditt.set_position(0, 0)
-// Banditt2.set_position(0, 0)
-// Banditt3.set_position(0, 0)
 function butikk_level() {
     
     flytte_sprites()
@@ -219,28 +213,11 @@ function butikk_level() {
     speedPotion.setPosition(150, 100)
 }
 
-//  Flytter unødvendige sprites off screen #
-// Bandits, taco, chest, Shop, treasure, bro #
-// Banditt.set_position(0, 0)
-// Banditt2.set_position(0, 0)
-// Banditt3.set_position(0, 0)
-// taco.set_position(0, 0)
-// shop.set_position(0, 0)
-// treasure.set_position(0, 0)
-// Til_LoreTile.set_position(0, 0) 
 function Banditt_Level() {
     
     tiles.setCurrentTilemap(tilemap`Banditt_Level`)
     playerChar.setPosition(128, 70)
-    shop.setPosition(0, 0)
-    butikkEier.setPosition(0, 0)
-    bodButikk.setPosition(0, 0)
-    strPotion.setPosition(0, 0)
-    intellectPotion.setPosition(0, 0)
-    agilityPotion.setPosition(0, 0)
-    speedPotion.setPosition(0, 0)
-    treasure.setPosition(0, 0)
-    taco.setPosition(0, 0)
+    flytte_sprites()
     Banditt.setPosition(128, 145)
     Banditt2.setPosition(148, 130)
     Banditt3.setPosition(100, 130)
@@ -250,17 +227,20 @@ function Banditt_Level() {
 function Lore_Level() {
     tiles.setCurrentTilemap(tilemap`Lore_Level`)
     //  Endrer tilemap
-    //  Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-    // sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    flytte_sprites()
     playerChar.setPosition(245, 140)
-    
-    bod = sprites.create(assets.image`Bod`, SpriteKind.Food)
     bod.setPosition(210, 45)
-    
-    Bro = sprites.create(assets.image`LoreBro`, SpriteKind.Food)
     Bro.setPosition(150, 70)
+    Til_Hund.setPosition(2, 140)
+    Lore_Exit.setPosition(250, 140)
     // Fjener butikken
     shop.setPosition(0, 0)
+}
+
+function Hund_Level() {
+    tiles.setCurrentTilemap(tilemap`Hund_Level`)
+    flytte_sprites()
+    Hund.setPosition(39, 200)
 }
 
 //  Spilløkken som sørger for interaktivitet i spillet.
@@ -427,6 +407,7 @@ game.onUpdate(function on_update() {
         //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop) {
             Lore_Level()
+            playerChar.setPosition(220, 130)
         } else {
             playerChar.setPosition(40, 90)
         }
@@ -526,8 +507,9 @@ game.onUpdate(function on_update() {
         pauseUntil(onPauseUntilEnter)
         if (enterShop) {
             Banditt_Level()
+            playerChar.setPosition(128, 20)
         } else {
-            playerChar.setPosition(120, 120)
+            playerChar.setPosition(128, 228)
         }
         
     }
@@ -535,15 +517,40 @@ game.onUpdate(function on_update() {
     if (playerChar.overlapsWith(BandittExit)) {
         pauseUntil(onPauseUntilExit)
         if (enterShop) {
-            // sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
-            // sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
             field_level()
+            playerChar.setPosition(128, 228)
         } else {
             playerChar.setPosition(128, 30)
         }
         
     }
     
+    if (playerChar.overlapsWith(Til_Hund)) {
+        pauseUntil(onPauseUntilEnter)
+        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (exitShop) {
+            Hund_Level()
+            playerChar.setPosition(250, 140)
+        } else {
+            playerChar.setPosition(35, 135)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
+    if (playerChar.overlapsWith(Lore_Exit)) {
+        pauseUntil(onPauseUntilExit)
+        //  Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (exitShop) {
+            field_level()
+            playerChar.setPosition(30, 95)
+        } else {
+            playerChar.setPosition(225, 135)
+        }
+        
+    }
+    
+    //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
     // ## Fight check ###
     if (playerChar.overlapsWith(Banditt)) {
         move_speed = 0

@@ -132,7 +132,11 @@ BandittEnter = sprites.create(assets.image("Til_Banditt"),SpriteKind.food)
 BandittExit = sprites.create(assets.image("Til_Banditt"),SpriteKind.exit)
 BandittExit.set_position(0, 0)
 
+Til_Hund = sprites.create(assets.image("Til_Lore"),SpriteKind.food)
+Til_Hund.set_position(0, 0)
 
+Lore_Exit = sprites.create(assets.image("Til_Lore"), SpriteKind.exit)
+Hund_Exit =sprites.create(assets.image("Til_Lore"),SpriteKind.exit)
 
 ### Skattekiste ###
 # Oppretter sprite for en skattekiste og setter dens posisjon.
@@ -148,11 +152,17 @@ treasureNotOpened = True
 music.play(music.create_song(assets.song("backgroundSong")), 
 music.PlaybackMode.LOOPING_IN_BACKGROUND)
 
+#Hund#
+Hund = sprites.create(assets.image("Hund_Front"),SpriteKind.food)
+bod = sprites.create(assets.image("Bod"), SpriteKind.food)
+Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
 
 #Lager en funksjon for å flytte alle sprites på en gang, for å 
 #korte ned koden
 def flytte_sprites():
     taco.set_position(0, 0)
+    Bro.set_position(0, 0)
+    bod.set_position(0, 0)
     shop.set_position(0, 0)
     shopExit.set_position(0,0)
     butikkEier.set_position(0,0)
@@ -168,7 +178,11 @@ def flytte_sprites():
     BandittEnter.set_position(0, 0)
     BandittExit.set_position(0, 0)
     treasure.set_position(0, 0)
-    Dekker.set_position(0, 0)
+    Til_Hund.set_position(0, 0)
+    Lore_Exit.set_position(0, 0)
+    Hund.set_position(0, 0)
+
+    Dekker.set_position(15, 15)
 
 
 field_level()
@@ -181,8 +195,6 @@ field_level()
 enterShop = False
 exitShop = False
 Kjeks = False
-Bro: Sprite = None
-bod: Sprite = None
 
 
 # Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
@@ -198,11 +210,6 @@ def onPauseUntilExit():
     return True
 
 
-def Destroy_Sprites():
-    sprites.destroy_all_sprites_of_kind(SpriteKind.food)
-    sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
-    sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
-    sprites.destroy_all_sprites_of_kind(SpriteKind.potions)
 
 def VilHaKjeks():
     global Kjeks
@@ -233,16 +240,7 @@ def field_level():
     Til_LoreTile.set_position(2,100)
     treasure.set_position(200, 150)
 
-    #Flytter på unødvendige Destroy_Sprites
-   # butikkEier.set_position(0, 0)
-    #bodButikk.set_position(0, 0)
-   # strPotion.set_position(0, 0)
-    #intellectPotion.set_position(0, 0)
-    #agilityPotion.set_position(0, 0)
-    #speedPotion.set_position(0, 0)
-    #Banditt.set_position(0, 0)
-    #Banditt2.set_position(0, 0)
-    #Banditt3.set_position(0, 0)
+
 
 def butikk_level():
     global strPotion, intellectPotion, agilityPotion, speedPotion
@@ -266,29 +264,13 @@ def butikk_level():
     speedPotion.set_position(150, 100)
 
 
-    # Flytter unødvendige sprites off screen #
-    #Bandits, taco, chest, Shop, treasure, bro #
-    #Banditt.set_position(0, 0)
-    #Banditt2.set_position(0, 0)
-    #Banditt3.set_position(0, 0)
-    #taco.set_position(0, 0)
-    #shop.set_position(0, 0)
-    #treasure.set_position(0, 0)
-    #Til_LoreTile.set_position(0, 0) 
+
 
 def Banditt_Level():
     global Banditt, Banditt2, Banditt3, BandittExit
     tiles.set_current_tilemap(tilemap("Banditt_Level"))
     playerChar.set_position(128, 70)
-    shop.set_position(0, 0)
-    butikkEier.set_position(0, 0)
-    bodButikk.set_position(0, 0)
-    strPotion.set_position(0, 0)
-    intellectPotion.set_position(0, 0)
-    agilityPotion.set_position(0, 0)
-    speedPotion.set_position(0, 0)
-    treasure.set_position(0, 0)
-    taco.set_position(0, 0)
+    flytte_sprites()
 
 
     Banditt.set_position(128, 145)
@@ -299,19 +281,31 @@ def Banditt_Level():
 
 def Lore_Level():
     tiles.set_current_tilemap(tilemap("Lore_Level")) # Endrer tilemap
-                        # Fjerner alle sprites av type food (som vi her har brukt som en generell kategori)
-    #sprites.destroy_all_sprites_of_kind(SpriteKind.food)
+    flytte_sprites()
     
     playerChar.set_position(245,140)
-    global bod
-    bod = sprites.create(assets.image("Bod"), SpriteKind.food)
+
+    
     bod.set_position(210, 45)
-    global Bro    
-    Bro = sprites.create(assets.image("LoreBro"), SpriteKind.food)
+
+    
     Bro.set_position(150,70)
+
+    Til_Hund.set_position(2, 140)
+    Lore_Exit.set_position(250, 140)
 
     #Fjener butikken
     shop.set_position(0, 0)
+
+def Hund_Level():
+    tiles.set_current_tilemap(tilemap("Hund_Level"))
+    flytte_sprites()
+
+    Hund.set_position(39,200)
+
+
+
+    
 # Spilløkken som sørger for interaktivitet i spillet.
 def on_update():
 
@@ -367,6 +361,7 @@ def on_update():
         pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop):
             Lore_Level()
+            playerChar.set_position(220, 130)
         else:
             playerChar.set_position(40, 90) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
@@ -447,17 +442,39 @@ def on_update():
         pause_until(onPauseUntilEnter)
         if(enterShop):
             Banditt_Level()
+            playerChar.set_position(128, 20)
         else:
-            playerChar.set_position(120,120)
+            playerChar.set_position(128,228)
+
 
     if(playerChar.overlaps_with(BandittExit)):
         pause_until(onPauseUntilExit)
         if(enterShop):
-            #sprites.destroy_all_sprites_of_kind(SpriteKind.npc)
-            #sprites.destroy_all_sprites_of_kind(SpriteKind.exit)
             field_level()
+            playerChar.set_position(128, 228)
+
         else:
             playerChar.set_position(128,30)
+
+
+    if(playerChar.overlaps_with(Til_Hund)):
+        pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (exitShop):
+            Hund_Level()
+            playerChar.set_position(250, 140)
+            
+        else:
+            playerChar.set_position(35,135) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
+    if(playerChar.overlaps_with(Lore_Exit)):
+        pause_until(onPauseUntilExit) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
+        if (exitShop):
+            field_level()
+            playerChar.set_position(30, 95)
+            
+        else:
+            playerChar.set_position(225,135) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+
 
     ### Fight check ###
 
