@@ -112,8 +112,10 @@ Banditt2.set_position(0, 0)
 Banditt3 = sprites.create(assets.image("Banditt3"), SpriteKind.npc)
 Banditt3.set_position(0, 0)
 
-    
-    
+#Dekker
+Dekker = sprites.create(assets.image("Dekker"),SpriteKind.food)
+Dekker.set_position(0, 0)
+
 ### Vil kjøpe potion? ###
 choice = False
 
@@ -147,6 +149,26 @@ music.play(music.create_song(assets.song("backgroundSong")),
 music.PlaybackMode.LOOPING_IN_BACKGROUND)
 
 
+#Lager en funksjon for å flytte alle sprites på en gang, for å 
+#korte ned koden
+def flytte_sprites():
+    taco.set_position(0, 0)
+    shop.set_position(0, 0)
+    shopExit.set_position(0,0)
+    butikkEier.set_position(0,0)
+    bodButikk.set_position(0,0)
+    strPotion.set_position(0, 0)
+    intellectPotion.set_position(0, 0)
+    agilityPotion.set_position(0, 0)
+    speedPotion.set_position(0, 0)
+    Banditt.set_position(0, 0)
+    Banditt2.set_position(0, 0)
+    Banditt3.set_position(0, 0)
+    Til_LoreTile.set_position(0, 0)
+    BandittEnter.set_position(0, 0)
+    BandittExit.set_position(0, 0)
+    treasure.set_position(0, 0)
+    Dekker.set_position(0, 0)
 
 
 field_level()
@@ -196,7 +218,10 @@ def VilHaKjeks():
 
 def field_level():
     tiles.set_current_tilemap(tilemap("field_level")) #Endrer tilemap
-    
+    flytte_sprites()
+
+
+
     BandittEnter.set_position(128, 255)
     ### Butikk ###
     # Oppretter sprite for en butikk og setter dens posisjon.
@@ -204,21 +229,24 @@ def field_level():
     shopExit.set_position(128,300)
     playerChar.set_position(128, 230) # Oppdaterer spillerens posisjon
     shopExit.set_position(128,300)
-    taco.set_position(10, 100)
+    taco.set_position(30, 100)
+    Til_LoreTile.set_position(2,100)
+    treasure.set_position(200, 150)
 
     #Flytter på unødvendige Destroy_Sprites
-    butikkEier.set_position(0, 0)
-    bodButikk.set_position(0, 0)
-    strPotion.set_position(0, 0)
-    intellectPotion.set_position(0, 0)
-    agilityPotion.set_position(0, 0)
-    speedPotion.set_position(0, 0)
-    Banditt.set_position(0, 0)
-    Banditt2.set_position(0, 0)
-    Banditt3.set_position(0, 0)
+   # butikkEier.set_position(0, 0)
+    #bodButikk.set_position(0, 0)
+   # strPotion.set_position(0, 0)
+    #intellectPotion.set_position(0, 0)
+    #agilityPotion.set_position(0, 0)
+    #speedPotion.set_position(0, 0)
+    #Banditt.set_position(0, 0)
+    #Banditt2.set_position(0, 0)
+    #Banditt3.set_position(0, 0)
 
 def butikk_level():
     global strPotion, intellectPotion, agilityPotion, speedPotion
+    flytte_sprites()
 
     tiles.set_current_tilemap(tilemap("shopInterior")) # Endrer tilemap
     shopExit.set_position(120,180)
@@ -240,13 +268,13 @@ def butikk_level():
 
     # Flytter unødvendige sprites off screen #
     #Bandits, taco, chest, Shop, treasure, bro #
-    Banditt.set_position(0, 0)
-    Banditt2.set_position(0, 0)
-    Banditt3.set_position(0, 0)
-    taco.set_position(0, 0)
-    shop.set_position(0, 0)
-    treasure.set_position(0, 0)
-    Til_LoreTile.set_position(0, 0) 
+    #Banditt.set_position(0, 0)
+    #Banditt2.set_position(0, 0)
+    #Banditt3.set_position(0, 0)
+    #taco.set_position(0, 0)
+    #shop.set_position(0, 0)
+    #treasure.set_position(0, 0)
+    #Til_LoreTile.set_position(0, 0) 
 
 def Banditt_Level():
     global Banditt, Banditt2, Banditt3, BandittExit
