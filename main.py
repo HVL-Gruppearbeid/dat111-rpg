@@ -186,8 +186,8 @@ field_level()
 # Variabel for å holde kontroll på om spilleren vil inn i butikken.
 enterShop = False
 exitShop = False
-Kjeks = False
-
+Har_du_hund = False
+Finnbar_hund = False
 
 # Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 # Manglet implementasjon i Python for MakeCode Arcade.
@@ -203,10 +203,6 @@ def onPauseUntilExit():
 
 
 
-def VilHaKjeks():
-    global Kjeks
-    Kjeks = game.ask("Vil du kjøpe en Kjeks for 1 gull?")
-    return True
 
 ###############
 # LEVELS #
@@ -290,6 +286,8 @@ def Lore_Level():
 
     #Fjener butikken
     shop.set_position(0, 0)
+    if(Har_du_hund):
+        Hund.set_position(30, 140)
 
 def Hund_Level():
     tiles.set_current_tilemap(tilemap("Hund_Level"))
@@ -496,16 +494,34 @@ def on_update():
 
 
 
-    ##Prøver å Gi mulighet for Kjeks
+    ##Hund quest
 
-    if(Bro and playerChar.overlaps_with(Bro) and teller == 0):
-        pause_until(VilHaKjeks)
-        if(Kjeks and gold > 1):
-            inventory.append("Kjeks x1")
-            playerChar.set_position(150, 90)
-            teller = 4
-        else:
-            playerChar.set_position(150,90)
+    if(playerChar.overlaps_with(Bro) and not Finnbar_hund and not Har_du_hund):
+        game.show_long_text("Har du sett hunden min? Hvis du ser den, ta den me tilbake så får du får 50 gull", DialogLayout.BOTTOM)
+        global Finnbar_hund
+        Finnbar_hund = True
+        playerChar.set_position(150, 90)
+
+
+    if(playerChar.overlaps_with(Hund) and Finnbar_hund):
+        game.show_long_text("Woof", DialogLayout.BOTTOM)    
+        Hund.follow(playerChar, 70)
+        playerChar.set_position(100, 200)
+    
+        global Har_du_hund
+        Finnbar_hund = False
+        Har_du_hund = True
+
+    if(playerChar.overlaps_with(Bro) and Har_du_hund == True):
+        game.show_long_text("Du fant hunden min! Tusen takk, her har du 50 gull", DialogLayout.BOTTOM)
+        game.show_long_text("Du fikk 50 gull", DialogLayout.BOTTOM)
+        gull = gull + 50
+        playerChar.set_position(150, 90)
+        Hund.follow(playerChar,0)
+        Hund.set_position(135,70)
+    
+    
+    
         
 
     ### Fight check ###

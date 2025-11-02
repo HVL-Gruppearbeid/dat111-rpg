@@ -147,7 +147,8 @@ field_level()
 //  Variabel for å holde kontroll på om spilleren vil inn i butikken.
 let enterShop = false
 let exitShop = false
-let Kjeks = false
+let Har_du_hund = false
+let Finnbar_hund = false
 //  Hjelpefunksjon som lar oss pause spillet frem til spilleren har utført et valg.
 //  Manglet implementasjon i Python for MakeCode Arcade.
 // ##############
@@ -215,6 +216,10 @@ function Lore_Level() {
     Lore_Exit.setPosition(250, 140)
     // Fjener butikken
     shop.setPosition(0, 0)
+    if (Har_du_hund) {
+        Hund.setPosition(30, 140)
+    }
+    
 }
 
 function Hund_Level() {
@@ -327,7 +332,7 @@ function fighting() {
 game.onUpdate(function on_update() {
     let choice: boolean;
     let purchasePotion: boolean;
-    let teller: number;
+    let gull: any;
     //  Taco-spriten blir "spist" dersom spillerkarakteren sin sprite overlapper den.
     //  Dette gjøres ved å spille av et lydklipp og sette resterende livstid for sprite til 0.
     if (playerChar.overlapsWith(taco)) {
@@ -576,21 +581,30 @@ game.onUpdate(function on_update() {
     }
     
     //  Flytter karakteren til en posisjon som ikke overlapper med butikken.
-    // #Prøver å Gi mulighet for Kjeks
-    if (Bro && playerChar.overlapsWith(Bro) && teller == 0) {
-        pauseUntil(function VilHaKjeks(): boolean {
-            
-            Kjeks = game.ask("Vil du kjøpe en Kjeks for 1 gull?")
-            return true
-        })
-        if (Kjeks && gold > 1) {
-            inventory.push("Kjeks x1")
-            playerChar.setPosition(150, 90)
-            teller = 4
-        } else {
-            playerChar.setPosition(150, 90)
-        }
+    // #Hund quest
+    if (playerChar.overlapsWith(Bro) && !Finnbar_hund && !Har_du_hund) {
+        game.showLongText("Har du sett hunden min? Hvis du ser den, ta den me tilbake så får du får 50 gull", DialogLayout.Bottom)
         
+        Finnbar_hund = true
+        playerChar.setPosition(150, 90)
+    }
+    
+    if (playerChar.overlapsWith(Hund) && Finnbar_hund) {
+        game.showLongText("Woof", DialogLayout.Bottom)
+        Hund.follow(playerChar, 70)
+        playerChar.setPosition(100, 200)
+        
+        Finnbar_hund = false
+        Har_du_hund = true
+    }
+    
+    if (playerChar.overlapsWith(Bro) && Har_du_hund == true) {
+        game.showLongText("Du fant hunden min! Tusen takk, her har du 50 gull", DialogLayout.Bottom)
+        game.showLongText("Du fikk 50 gull", DialogLayout.Bottom)
+        gull = gull + 50
+        playerChar.setPosition(150, 90)
+        Hund.follow(playerChar, 0)
+        Hund.setPosition(135, 70)
     }
     
     // ## Fight check ###
