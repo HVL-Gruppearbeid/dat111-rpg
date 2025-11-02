@@ -10,6 +10,8 @@ namespace SpriteKind {
     export const main_level = SpriteKind.create()
 }
 
+let move_speed = 200
+let current_Bandit = 0
 //  Oversikt over utstyret som finnes i spillet.
 //  Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
 let equipmentDatabase = {
@@ -242,7 +244,7 @@ function update_character_animation() {
         if (current_animation != "walk_left") {
             //  Unngår å overskrive pågående animasjon
             //  Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-            animation.runImageAnimation(playerChar, assets.animation`heroWalkLeft`, 200, true)
+            animation.runImageAnimation(playerChar, assets.animation`heroWalkLeft`, move_speed, true)
             current_animation = "walk_left"
         }
         
@@ -253,7 +255,7 @@ function update_character_animation() {
         if (current_animation != "walk_right") {
             //  Unngår å overskrive pågående animasjon
             //  Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-            animation.runImageAnimation(playerChar, assets.animation`heroWalkRight`, 200, true)
+            animation.runImageAnimation(playerChar, assets.animation`heroWalkRight`, move_speed, true)
             current_animation = "walk_right"
         }
         
@@ -263,7 +265,7 @@ function update_character_animation() {
         if (current_animation != "walk_down") {
             //  Unngår å overskrive pågående animasjon
             //  Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-            animation.runImageAnimation(playerChar, assets.animation`heroWalkDown`, 200, true)
+            animation.runImageAnimation(playerChar, assets.animation`heroWalkDown`, move_speed, true)
             current_animation = "walk_down"
         }
         
@@ -273,7 +275,7 @@ function update_character_animation() {
         if (current_animation != "walk_up") {
             //  Unngår å overskrive pågående animasjon
             //  Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
-            animation.runImageAnimation(playerChar, assets.animation`heroWalkUp`, 200, true)
+            animation.runImageAnimation(playerChar, assets.animation`heroWalkUp`, move_speed, true)
             current_animation = "walk_up"
         }
         
@@ -282,15 +284,31 @@ function update_character_animation() {
 }
 
 //  Skal bli Fighting
-function Fighting() {
-    let current_animation: string;
-    if (playerChar.overlapsWith(Banditt) || playerChar.overlapsWith(Banditt2) || playerChar.overlapsWith(Banditt3)) {
-        if (current_animation == "walk_down") {
-            current_animation = "Hero_Stab_Front"
-        }
-        
+function fighting() {
+    let move_speed = 0
+    tiles.setCurrentTilemap(tilemap`battle_map`)
+    Til_LoreTile.setPosition(0, 0)
+    playerChar.setPosition(20, 130)
+    scaling.scaleToPercent(playerChar, 500, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    game.showLongText("A wild Bandit appears!", DialogLayout.Bottom)
+    if (current_Bandit == 1) {
+        Banditt2.setPosition(0, 0)
+        Banditt3.setPosition(0, 0)
+        Banditt.setPosition(130, 130)
+        scaling.scaleToPercent(Banditt, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    } else if (current_Bandit == 2) {
+        Banditt.setPosition(0, 0)
+        Banditt3.setPosition(0, 0)
+        Banditt2.setPosition(130, 130)
+        scaling.scaleToPercent(Banditt2, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    } else {
+        Banditt.setPosition(0, 0)
+        Banditt2.setPosition(0, 0)
+        Banditt3.setPosition(130, 130)
+        scaling.scaleToPercent(Banditt3, 300, ScaleDirection.Uniformly, ScaleAnchor.Middle)
     }
     
+    story.showPlayerChoices("Fast attack", "Heavy attack", "smart attack")
 }
 
 //  Oppgir at vår on_update-funksjon skal fungere som on_update,
@@ -310,6 +328,8 @@ game.onUpdate(function on_update() {
     //  Sørger for at vi bruker de globale verdiene til disse variablene
     //  (som vi definerte tidligere), ellers ville det blitt opprettet lokale
     //  variabler med samme navn når vi endrer verdi på de.
+    
+    
     
     
     //  En skattekiste blir åpnet dersom spillerens sprite overlapper og kisten ikke har vært åpnet før.
@@ -472,6 +492,25 @@ game.onUpdate(function on_update() {
             playerChar.setPosition(128, 30)
         }
         
+    }
+    
+    // ## Fight check ###
+    if (playerChar.overlapsWith(Banditt)) {
+        move_speed = 0
+        current_Bandit = 1
+        fighting()
+    }
+    
+    if (playerChar.overlapsWith(Banditt2)) {
+        move_speed = 0
+        current_Bandit = 2
+        fighting()
+    }
+    
+    if (playerChar.overlapsWith(Banditt3)) {
+        move_speed = 0
+        current_Bandit = 3
+        fighting()
     }
     
     //  Oppdaterer karakterens animasjon

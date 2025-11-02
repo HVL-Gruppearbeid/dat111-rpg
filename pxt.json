@@ -2,7 +2,9 @@
     "name": "DAT111-RPG",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "arcade-story": "github:microsoft/arcade-storytelling#v1.0.3",
+        "sprite-scaling": "*"
     },
     "files": [
         "main.ts",

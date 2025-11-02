@@ -11,6 +11,10 @@ class SpriteKind:
     shop_level = SpriteKind.create()
     main_level = SpriteKind.create()
 
+
+move_speed = 200
+current_Bandit = 0
+
     
 # Oversikt over utstyret som finnes i spillet.
 # Uttrykt som en ordbok nøkkel-verdi-par, en tekststreng som nøkkel og verdier som tupler.
@@ -291,6 +295,8 @@ def on_update():
     # variabler med samme navn når vi endrer verdi på de.
     global treasureNotOpened
     global gold
+    global move_speed
+    global current_Bandit
     
 
     # En skattekiste blir åpnet dersom spillerens sprite overlapper og kisten ikke har vært åpnet før.
@@ -419,7 +425,23 @@ def on_update():
             field_level()
         else:
             playerChar.set_position(128,30)
-        
+
+    ### Fight check ###
+
+    if(playerChar.overlaps_with(Banditt)):
+        move_speed = 0
+        current_Bandit = 1
+        fighting()
+    
+    if(playerChar.overlaps_with(Banditt2)):
+            move_speed = 0
+            current_Bandit = 2
+            fighting()
+
+    if(playerChar.overlaps_with(Banditt3)):
+        move_speed = 0
+        current_Bandit = 3
+        fighting()
     
 
 
@@ -441,6 +463,7 @@ def on_update():
 # Funksjon som sørger for at animasjonene passer med bevegelsen som foregår.
 def update_character_animation():
     global current_animation # Variabel som hjelper oss til å unngå å overskrive pågående animasjoner.
+    
 
     # Akriverer venstrestilt animasjon dersom venstre tast er trykket.
     if(controller.left.is_pressed()):
@@ -448,7 +471,7 @@ def update_character_animation():
         if(current_animation != "walk_left"): # Unngår å overskrive pågående animasjon
             # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
             animation.run_image_animation(playerChar, 
-            assets.animation("heroWalkLeft"), 200, True)
+            assets.animation("heroWalkLeft"), move_speed, True)
             current_animation = "walk_left"
         
         
@@ -459,29 +482,56 @@ def update_character_animation():
          if(current_animation != "walk_right"): # Unngår å overskrive pågående animasjon
               # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
                  animation.run_image_animation(playerChar,
-                 assets.animation("heroWalkRight"), 200, True)
+                 assets.animation("heroWalkRight"), move_speed, True)
                  current_animation = "walk_right"
 
     if(controller.down.is_pressed()):
          if(current_animation != "walk_down"): # Unngår å overskrive pågående animasjon
               # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
                  animation.run_image_animation(playerChar,
-                 assets.animation("heroWalkDown"), 200, True)
+                 assets.animation("heroWalkDown"), move_speed, True)
                  current_animation = "walk_down"
 
     if(controller.up.is_pressed()):
             if(current_animation != "walk_up"): # Unngår å overskrive pågående animasjon
                  # Starter animasjon på spillerens karakter, med gitt animasjon og hastighet, og setter den til å loope.
                  animation.run_image_animation(playerChar,
-                assets.animation("heroWalkUp"), 200, True)
+                assets.animation("heroWalkUp"), move_speed, True)
                  current_animation = "walk_up"
 
 # Skal bli Fighting
-def Fighting():
+def fighting():
 
-    if(playerChar.overlaps_with(Banditt) or playerChar.overlaps_with(Banditt2) or playerChar.overlaps_with(Banditt3)):
-            if(current_animation == "walk_down"):
-                current_animation = "Hero_Stab_Front"
+    move_speed = 0
+    tiles.set_current_tilemap(tilemap("battle_map"))
+    Til_LoreTile.set_position(0, 0)
+    playerChar.set_position(20,130)
+    scaling.scale_to_percent(playerChar, 500, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+    game.show_long_text("A wild Bandit appears!", DialogLayout.BOTTOM)
+
+
+    if (current_Bandit == 1):
+        Banditt2.set_position(0,0)
+        Banditt3.set_position(0,0)
+        Banditt.set_position(130, 130)
+        scaling.scale_to_percent(Banditt, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+        
+
+    elif (current_Bandit == 2):
+        Banditt.set_position(0,0)
+        Banditt3.set_position(0,0)
+        Banditt2.set_position(130, 130)
+        scaling.scale_to_percent(Banditt2, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+    else:
+        Banditt.set_position(0,0)
+        Banditt2.set_position(0,0)
+        Banditt3.set_position(130, 130)
+        scaling.scale_to_percent(Banditt3, 300, ScaleDirection.UNIFORMLY, ScaleAnchor.MIDDLE)
+    
+    story.show_player_choices("Fast attack", "Heavy attack", "smart attack")
+    
+    
+    
 
 
 # Oppgir at vår on_update-funksjon skal fungere som on_update,
