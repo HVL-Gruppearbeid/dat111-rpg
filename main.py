@@ -327,6 +327,8 @@ def Lore_Level():
     shop.set_position(0, 0)
     if(Har_du_hund):
         Hund.set_position(30, 140)
+    if(Funnet_hund):
+        Hund.set_position(140, 70)
     
     if(Funnet_hund):
         Kjeks.set_position(210, 45)
@@ -338,8 +340,8 @@ def Lore_Level():
 def Hund_Level():
     tiles.set_current_tilemap(tilemap("Hund_Level"))
     flytte_sprites()
-
-    Hund.set_position(39,200)
+    if(Funnet_hund == False):
+        Hund.set_position(39,200)
     Hund_Exit.set_position(255,125)
 
 
@@ -670,16 +672,15 @@ def on_update():
 
     if(playerChar.overlaps_with(Heavy_Attack)):
         info.change_countdown_by(-20)
-        Heavy_Attack.lifespan = 0
+        Heavy_Attack.set_position(0, 0)
     
     if(playerChar.overlaps_with(Fast_Attack)):
         info.change_countdown_by(-5)
-        Fast_Attack.lifespan = 0
+        Fast_Attack.set_position(0, 0)
 
     if(playerChar.overlaps_with(Magic_Attack)):
         info.change_countdown_by(-10)
-        Magic_Attack.lifespan = 0
-    
+        Magic_Attack.set_position(0, 0)  
        
         
     

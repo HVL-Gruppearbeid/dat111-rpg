@@ -258,6 +258,10 @@ function Lore_Level() {
     }
     
     if (Funnet_hund) {
+        Hund.setPosition(140, 70)
+    }
+    
+    if (Funnet_hund) {
         Kjeks.setPosition(210, 45)
     }
     
@@ -266,7 +270,10 @@ function Lore_Level() {
 function Hund_Level() {
     tiles.setCurrentTilemap(tilemap`Hund_Level`)
     flytte_sprites()
-    Hund.setPosition(39, 200)
+    if (Funnet_hund == false) {
+        Hund.setPosition(39, 200)
+    }
+    
     Hund_Exit.setPosition(255, 125)
 }
 
@@ -750,17 +757,17 @@ game.onUpdate(function on_update() {
     
     if (playerChar.overlapsWith(Heavy_Attack)) {
         info.changeCountdownBy(-20)
-        Heavy_Attack.lifespan = 0
+        Heavy_Attack.setPosition(0, 0)
     }
     
     if (playerChar.overlapsWith(Fast_Attack)) {
         info.changeCountdownBy(-5)
-        Fast_Attack.lifespan = 0
+        Fast_Attack.setPosition(0, 0)
     }
     
     if (playerChar.overlapsWith(Magic_Attack)) {
         info.changeCountdownBy(-10)
-        Magic_Attack.lifespan = 0
+        Magic_Attack.setPosition(0, 0)
     }
     
     // ##Litt Story
