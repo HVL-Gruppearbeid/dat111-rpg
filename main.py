@@ -110,7 +110,7 @@ choice = False
 
 def purchaseYes():
     global choice
-    return True
+    
 
 ###Teleportører###
 Til_LoreTile = sprites.create(assets.image("Til_Lore"), SpriteKind.food)
@@ -332,7 +332,6 @@ def on_update():
         pause_until(onPauseUntilEnter) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (enterShop):
             butikk_level()
-   
         else:
             playerChar.set_position(128, 70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
@@ -340,99 +339,111 @@ def on_update():
         pause_until(onPauseUntilExit) # Hjelpefunksjon som holder spillet pauset til brukeren avgir svar.
         if (exitShop):
             field_level()
-            
+            playerChar.set_position(128, 70)
         else:
-            playerChar.set_position(120,150) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
-
-
+            playerChar.set_position(128,70) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
+        ##Lore_Level##
     if(playerChar.overlaps_with(Til_LoreTile)):
         Lore_Level()
         playerChar.set_position(220, 130)
         
-
     if(playerChar.overlaps_with(Lore_Exit)):
         field_level()
-        playerChar.set_position(30, 95)
-    
-
-
+        playerChar.set_position(15, 90)
+        ##Banditt_Level##
     if(playerChar.overlaps_with(BandittEnter)):
         Banditt_Level()
         playerChar.set_position(128, 20)
     
-
     if(playerChar.overlaps_with(BandittExit)):
         
         field_level()
         playerChar.set_position(128, 228)
-
-
-
+        ##Hund_Level##
     if(playerChar.overlaps_with(Til_Hund)):
         Hund_Level()
         playerChar.set_position(230, 125)
             
     if(playerChar.overlaps_with(Hund_Exit)):
         Lore_Level()
-        playerChar.set_position(100, 180)
+        playerChar.set_position(30, 140)
             
 
 
 
 ### Spør spiller om de vil kjøpe strength potion ###
     if(strPotion is not None and playerChar.overlaps_with(strPotion)):
-        purchaseYes()
         choice = game.ask("Kjøp en potion?", "Strength: 20 Gull")
-        if(choice and gold>20):
-            gold-20
-            stats["strength"] += 2
-            game.show_long_text("Du har fått +2 Strength", DialogLayout.BOTTOM)
-            playerChar.set_position(90,120)
+        if(choice):
+            if(gold >= 20):
+                gold= gold - 20
+                stats["strength"] += 2
+                game.show_long_text("Du har fått +2 Strength", DialogLayout.BOTTOM)
+                playerChar.set_position(90,120)
+                purchasePotion = True
+            else:
+                game.show_long_text("Du har mindre enn 20 gull", DialogLayout.BOTTOM)
+                purchasePotion = False
+                playerChar.set_position(90,120) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
         else:
-            game.show_long_text("Du har mindre enn 20 gull", DialogLayout.BOTTOM)
             purchasePotion = False
-            playerChar.set_position(90,120) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
-
+            playerChar.set_position(90, 120)
 ### Spør spiller om de vil kjøpe intellect potion ###
 
     if(intellectPotion is not None and playerChar.overlaps_with(intellectPotion)):
-        purchaseYes()
+        
         choice = game.ask("Kjøp en potion?", "Intelligens: 20 Gull")
-        if(choice and gold>20):
-            gold-20
-            stats["intellect"] += 2
-            game.show_long_text("Du har fått +2 Intelligens", DialogLayout.BOTTOM)
-            playerChar.set_position(110,120)
+        if(choice):
+            if(gold >= 20):
+                gold = gold - 20
+                stats["intellect"] += 2
+                game.show_long_text("Du har fått +2 Intelligens", DialogLayout.BOTTOM)
+                playerChar.set_position(110,120)
+                purchasePotion = True
+            else:
+                game.show_long_text("Du har mindre enn 20 gull", DialogLayout.BOTTOM)
+                purchasePotion = False
+                playerChar.set_position(110,120)
         else:
             purchasePotion = False
             playerChar.set_position(110,120) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
 ### Spør spiller om de vil kjøpe agility potion ###
     if(agilityPotion is not None and playerChar.overlaps_with(agilityPotion)):
-            purchaseYes()
+            
             choice = game.ask("Kjøp en potion?", "Agility: 20 Gull")
-            if(choice and gold>20):
-                gold-20
-                stats["agility"] += 2
-                game.show_long_text("Du har fått +2 Agility", DialogLayout.BOTTOM)
-                playerChar.set_position(130,120)
+            if(choice):
+                if(gold >= 20):
+                    gold = gold - 20
+                    stats["agility"] += 2
+                    game.show_long_text("Du har fått +2 Agility", DialogLayout.BOTTOM)
+                    playerChar.set_position(130,120)
+                    purchasePotion = True
+                else:
+                    game.show_long_text("Du har mindre enn 20 gull", DialogLayout.BOTTOM)
+                    purchasePotion = False
+                    playerChar.set_position(130,120)
             else:
-                game.show_long_text("Du har mindre enn 20 gull", DialogLayout.BOTTOM)
                 purchasePotion = False
                 playerChar.set_position(130,120) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
 ### Spør spiller om de vil kjøpe speed potion ###
 
     if(speedPotion is not None and playerChar.overlaps_with(speedPotion)):
-            purchaseYes()
             choice = game.ask("Kjøp en potion?", "Speed: 20 Gull")
-            if(choice and gold>20):
-                gold-20
-                stats["speed"] += 2
-                game.show_long_text("Du har fått +2 Speed", DialogLayout.BOTTOM)
-                playerChar.set_position(150,120)
+            if(choice):
+                if(gold >= 20):
+                    gold = gold - 20
+                    stats["speed"] += 2
+                    game.show_long_text("Du har fått +2 Speed", DialogLayout.BOTTOM)
+                    playerChar.set_position(150,120)
+                    purchasePotion = True
+                else: 
+                    game.show_long_text("Du har mindre enn 20 gull", DialogLayout.BOTTOM)
+                    purchasePotion = False
+                    playerChar.set_position(150,120)
             else:
-                game.show_long_text("Du har mindre enn 20 gull", DialogLayout.BOTTOM)
+                
                 purchasePotion = False
                 playerChar.set_position(150,120) # Flytter karakteren til en posisjon som ikke overlapper med butikken.
 
