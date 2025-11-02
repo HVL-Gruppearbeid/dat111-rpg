@@ -297,6 +297,7 @@ function fighting() {
     scaling.scaleToPercent(playerChar, 500, ScaleDirection.Uniformly, ScaleAnchor.Middle)
     playerChar.setStayInScreen(true)
     game.showLongText("A wild Bandit appears!", DialogLayout.Bottom)
+    //  Prøvde ein while loop her for å "holde" spillet i combat. Men med den ekstremt awkward number selectoren, så ser du jo ikkje nåke anna.
     if (current_Bandit == 1) {
         Banditt2.setPosition(0, 0)
         Banditt3.setPosition(0, 0)

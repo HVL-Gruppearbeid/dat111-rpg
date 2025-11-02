@@ -519,7 +519,7 @@ def fighting():
     playerChar.set_stay_in_screen(True)
     game.show_long_text("A wild Bandit appears!", DialogLayout.BOTTOM)
 
-
+    # Prøvde ein while loop her for å "holde" spillet i combat. Men med den ekstremt awkward number selectoren, så ser du jo ikkje nåke anna.
     if (current_Bandit == 1):
         Banditt2.set_position(0,0)
         Banditt3.set_position(0,0)
